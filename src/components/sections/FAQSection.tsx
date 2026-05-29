@@ -1,6 +1,7 @@
 "use client";
 
 import type { SiteConfig } from "@/types/site-config";
+import { resolveSectionCopy } from "@/lib/section-copy";
 import { SectionShell } from "@/components/shared/SectionShell";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { FadeIn } from "@/components/shared/FadeIn";
@@ -16,13 +17,15 @@ interface FAQSectionProps {
 }
 
 export function FAQSection({ config }: FAQSectionProps) {
+  const copy = resolveSectionCopy(config);
+
   return (
     <SectionShell id="faq" variant="muted">
       <FadeIn>
         <SectionHeading
-          eyebrow="SSS"
-          title="Sık sorulan sorular"
-          description="Merak ettiklerinizin yanıtları burada."
+          eyebrow={copy.faq.eyebrow}
+          title={copy.faq.title}
+          description={copy.faq.description}
         />
       </FadeIn>
 
@@ -34,7 +37,7 @@ export function FAQSection({ config }: FAQSectionProps) {
         >
           {config.faqs.map((faq) => (
             <AccordionItem key={faq.id} value={faq.id}>
-              <AccordionTrigger className="py-4 text-base hover:no-underline">
+              <AccordionTrigger className="py-4 text-left text-base hover:no-underline">
                 {faq.question}
               </AccordionTrigger>
               <AccordionContent className="text-muted-foreground">

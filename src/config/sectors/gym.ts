@@ -137,6 +137,47 @@ export const gymConfig: SiteConfig = {
       { label: "Memnuniyet", value: "%96" },
     ],
     imageAlt: "Modern fitness salonu ve ağırlık alanı",
+    bullets: [
+      "7/24 açık salon",
+      "Sertifikalı personal trainer",
+      "Ücretsiz 3 günlük deneme",
+    ],
+  },
+  sections: {
+    hero: {
+      badge: "3 gün ücretsiz deneme",
+      primaryCta: "Üyelik Başlat",
+      secondaryCta: "Programları İncele",
+    },
+    services: {
+      eyebrow: "Programlar",
+      title: "Hedefinize uygun antrenman",
+      description:
+        "Üyelik, kişisel antrenman ve grup dersleriyle fitness yolculuğunuzu planlayın.",
+    },
+    testimonials: {
+      eyebrow: "Yorumlar",
+      title: "Üyelerimiz ne diyor?",
+      description: "FitZone ile hedeflerine ulaşan üyelerden geri bildirimler.",
+    },
+    faq: {
+      eyebrow: "SSS",
+      title: "Sık sorulan sorular",
+      description: "Üyelik, dondurma ve yeni başlayanlar hakkında yanıtlar.",
+    },
+    contact: {
+      eyebrow: "İletişim",
+      title: "Salon turu ve üyelik için iletişim",
+      description:
+        "Ücretsiz deneme randevusu veya kurumsal teklif için bize ulaşın.",
+    },
+    cta: {
+      title: "Güçlü vücut, güçlü zihin — bugün başlayın",
+      description:
+        "3 günlük ücretsiz deneme ile salonu ve eğitmenleri tanıyın. Sınırlı kontenjan.",
+      callLabel: "Hemen Ara",
+      whatsappLabel: "WhatsApp ile yazın",
+    },
   },
   seo: {
     title: "FitZone Spor Merkezi | Levent 7/24 Fitness",

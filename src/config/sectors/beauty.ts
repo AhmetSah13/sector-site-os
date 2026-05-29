@@ -137,6 +137,47 @@ export const beautyConfig: SiteConfig = {
       { label: "Tekrar oranı", value: "%92" },
     ],
     imageAlt: "Lüks güzellik stüdyosu makyaj masası",
+    bullets: [
+      "Dermatolojik test onaylı ürünler",
+      "Uzman estetisyen kadrosu",
+      "Online randevu kolaylığı",
+    ],
+  },
+  sections: {
+    hero: {
+      badge: "İlk cilt analizi ücretsiz",
+      primaryCta: "Randevu Al",
+      secondaryCta: "Hizmetler",
+    },
+    services: {
+      eyebrow: "Hizmetler",
+      title: "Cilt, saç ve güzellik ritüelleri",
+      description:
+        "Kişiye özel bakım protokolleri ve lüks stüdyo deneyimiyle ışıltınızı ortaya çıkarın.",
+    },
+    testimonials: {
+      eyebrow: "Yorumlar",
+      title: "Müşterilerimiz ne diyor?",
+      description: "Lumière deneyimini paylaşan misafirlerimizden yorumlar.",
+    },
+    faq: {
+      eyebrow: "SSS",
+      title: "Sık sorulan sorular",
+      description: "Randevu, bakım süreleri ve iptal politikası hakkında.",
+    },
+    contact: {
+      eyebrow: "İletişim",
+      title: "Randevu ve danışmanlık",
+      description:
+        "Popüler saatler için önceden randevu almanızı öneririz. Form veya WhatsApp ile ulaşın.",
+    },
+    cta: {
+      title: "Kendinize ayırdığınız zamanı güzelleştirin",
+      description:
+        "Ücretsiz cilt analizi randevunuzu hemen alın. Uzman ekibimiz sizi bekliyor.",
+      callLabel: "Hemen Ara",
+      whatsappLabel: "WhatsApp ile yazın",
+    },
   },
   seo: {
     title: "Lumière Beauty Studio | Suadiye Güzellik Salonu",

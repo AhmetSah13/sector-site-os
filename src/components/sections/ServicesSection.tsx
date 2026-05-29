@@ -1,5 +1,6 @@
 import type { SiteConfig } from "@/types/site-config";
 import { getServiceIcon } from "@/lib/icons";
+import { resolveSectionCopy } from "@/lib/section-copy";
 import { SectionShell } from "@/components/shared/SectionShell";
 import { SectionHeading } from "@/components/shared/SectionHeading";
 import { FadeIn } from "@/components/shared/FadeIn";
@@ -16,13 +17,15 @@ interface ServicesSectionProps {
 }
 
 export function ServicesSection({ config }: ServicesSectionProps) {
+  const copy = resolveSectionCopy(config);
+
   return (
     <SectionShell id="services">
       <FadeIn>
         <SectionHeading
-          eyebrow="Hizmetler"
-          title="Size özel tedavi çözümleri"
-          description="Deneyimli ekibimiz ve modern ekipmanlarımızla kapsamlı hizmet sunuyoruz."
+          eyebrow={copy.services.eyebrow}
+          title={copy.services.title}
+          description={copy.services.description}
         />
       </FadeIn>
 

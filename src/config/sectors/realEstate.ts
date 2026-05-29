@@ -137,6 +137,47 @@ export const realEstateConfig: SiteConfig = {
       { label: "Ort. satış süresi", value: "28 gün" },
     ],
     imageAlt: "Modern ofis ve şehir manzaralı salon",
+    bullets: [
+      "Şeffaf süreç yönetimi",
+      "SPK uyumlu değerleme ağı",
+      "Yabancı alıcıya tam destek",
+    ],
+  },
+  sections: {
+    hero: {
+      badge: "Ücretsiz değerleme görüşmesi",
+      primaryCta: "Danışmanlık Al",
+      secondaryCta: "Portföy",
+    },
+    services: {
+      eyebrow: "Hizmetler",
+      title: "Konut, ticari ve yatırım danışmanlığı",
+      description:
+        "Alım-satım, kiralama ve yatırım süreçlerinde uçtan uca profesyonel destek.",
+    },
+    testimonials: {
+      eyebrow: "Referanslar",
+      title: "Müşterilerimiz ne diyor?",
+      description: "PrimeNest ile başarılı işlem tamamlayan müşterilerimiz.",
+    },
+    faq: {
+      eyebrow: "SSS",
+      title: "Sık sorulan sorular",
+      description: "Komisyon, değerleme ve yabancı alıcı süreçleri hakkında.",
+    },
+    contact: {
+      eyebrow: "İletişim",
+      title: "Gayrimenkul danışmanlığı için iletişim",
+      description:
+        "Portföyünüz veya yatırım hedefleriniz için uzman danışmanımızla görüşün.",
+    },
+    cta: {
+      title: "Doğru adres, doğru yatırım",
+      description:
+        "Ücretsiz ön görüşme ve portföy analizi için hemen iletişime geçin.",
+      callLabel: "Hemen Ara",
+      whatsappLabel: "WhatsApp ile yazın",
+    },
   },
   seo: {
     title: "PrimeNest Gayrimenkul | İstanbul Emlak Danışmanlığı",

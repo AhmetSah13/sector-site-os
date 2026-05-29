@@ -10,10 +10,11 @@ interface AboutSectionProps {
 
 export function AboutSection({ config }: AboutSectionProps) {
   const { about } = config;
+  const bullets = about.bullets ?? [];
 
   return (
     <SectionShell id="about" variant="muted">
-      <div className="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+      <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         <FadeIn direction="none">
           {about.image ? (
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl ring-1 ring-border/80">
@@ -27,13 +28,13 @@ export function AboutSection({ config }: AboutSectionProps) {
             </div>
           ) : (
             <div className="relative aspect-[4/3] overflow-hidden rounded-2xl bg-gradient-to-br from-primary/20 via-accent/30 to-background ring-1 ring-border/80">
-              <div className="absolute inset-0 flex items-center justify-center p-8">
+              <div className="absolute inset-0 flex items-center justify-center p-6 sm:p-8">
                 <div className="text-center">
-                  <p className="text-5xl font-semibold tracking-tight text-primary">
-                    {about.highlights?.[0]?.value ?? "15+"}
+                  <p className="text-4xl font-semibold tracking-tight text-primary sm:text-5xl">
+                    {about.highlights?.[0]?.value ?? "—"}
                   </p>
-                  <p className="mt-2 text-sm font-medium text-muted-foreground uppercase tracking-wide">
-                    {about.highlights?.[0]?.label ?? "Yıllık deneyim"}
+                  <p className="mt-2 text-xs font-medium tracking-wide text-muted-foreground uppercase sm:text-sm">
+                    {about.highlights?.[0]?.label ?? ""}
                   </p>
                 </div>
               </div>
@@ -46,7 +47,7 @@ export function AboutSection({ config }: AboutSectionProps) {
             <p className="mb-3 text-sm font-medium tracking-wide text-primary uppercase">
               Hakkımızda
             </p>
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
+            <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl lg:text-4xl">
               {about.title}
             </h2>
           </FadeIn>
@@ -63,16 +64,16 @@ export function AboutSection({ config }: AboutSectionProps) {
 
           {about.highlights && about.highlights.length > 1 ? (
             <FadeIn delay={0.2}>
-              <ul className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3">
+              <ul className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4">
                 {about.highlights.slice(1).map((item) => (
                   <li
                     key={item.label}
-                    className="rounded-xl border border-border/80 bg-background p-4 shadow-sm"
+                    className="rounded-xl border border-border/80 bg-background p-3 shadow-sm sm:p-4"
                   >
-                    <p className="text-2xl font-semibold text-foreground">
+                    <p className="text-xl font-semibold text-foreground sm:text-2xl">
                       {item.value}
                     </p>
-                    <p className="mt-1 text-sm text-muted-foreground">
+                    <p className="mt-1 text-xs text-muted-foreground sm:text-sm">
                       {item.label}
                     </p>
                   </li>
@@ -81,20 +82,21 @@ export function AboutSection({ config }: AboutSectionProps) {
             </FadeIn>
           ) : null}
 
-          <FadeIn delay={0.25}>
-            <ul className="mt-8 space-y-3">
-              {[
-                "Steril ve modern klinik ortamı",
-                "Kişiye özel tedavi planı",
-                "Şeffaf fiyatlandırma",
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-2 text-sm sm:text-base">
-                  <CheckCircle2 className="size-5 shrink-0 text-primary" />
-                  <span>{item}</span>
-                </li>
-              ))}
-            </ul>
-          </FadeIn>
+          {bullets.length > 0 ? (
+            <FadeIn delay={0.25}>
+              <ul className="mt-8 space-y-3">
+                {bullets.map((item) => (
+                  <li
+                    key={item}
+                    className="flex items-start gap-2 text-sm sm:items-center sm:text-base"
+                  >
+                    <CheckCircle2 className="mt-0.5 size-5 shrink-0 text-primary sm:mt-0" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </FadeIn>
+          ) : null}
         </div>
       </div>
     </SectionShell>

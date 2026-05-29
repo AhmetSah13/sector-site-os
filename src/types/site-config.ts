@@ -60,10 +60,48 @@ export interface SocialLink {
   label?: string;
 }
 
+export interface SectionHeadingCopy {
+  eyebrow?: string;
+  title: string;
+  description?: string;
+}
+
+export interface HeroSectionCopy {
+  badge?: string;
+  primaryCta?: string;
+  secondaryCta?: string;
+}
+
+export interface CtaSectionCopy {
+  title: string;
+  description: string;
+  callLabel?: string;
+  whatsappLabel?: string;
+}
+
+export interface SiteSectionsCopy {
+  hero?: HeroSectionCopy;
+  services?: SectionHeadingCopy;
+  testimonials?: SectionHeadingCopy;
+  faq?: SectionHeadingCopy;
+  contact?: SectionHeadingCopy;
+  cta?: CtaSectionCopy;
+}
+
+export type ResolvedSectionCopy = {
+  hero: Required<HeroSectionCopy>;
+  services: Required<SectionHeadingCopy>;
+  testimonials: Required<SectionHeadingCopy>;
+  faq: Required<SectionHeadingCopy>;
+  contact: Required<SectionHeadingCopy>;
+  cta: Required<CtaSectionCopy>;
+};
+
 export interface AboutContent {
   title: string;
   paragraphs: string[];
   highlights?: { label: string; value: string }[];
+  bullets?: string[];
   /** Path under /public, e.g. /images/about.jpg — rendered via next/image */
   image?: string;
   imageAlt?: string;
@@ -91,5 +129,7 @@ export interface SiteConfig {
   faqs: FAQItem[];
   socialLinks: SocialLink[];
   about: AboutContent;
+  /** Section başlıkları, CTA metinleri ve hero butonları */
+  sections?: SiteSectionsCopy;
   seo?: SiteSEO;
 }

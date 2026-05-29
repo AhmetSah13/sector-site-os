@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Menu, Phone } from "lucide-react";
 import type { SiteConfig } from "@/types/site-config";
@@ -13,14 +13,14 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { buildTelHref } from "@/lib/links";
-
-const navLinks = [
-  { href: "#services", label: "Hizmetler" },
-  { href: "#about", label: "Hakkımızda" },
-  { href: "#testimonials", label: "Yorumlar" },
-  { href: "#faq", label: "SSS" },
-  { href: "#contact", label: "İletişim" },
-];
+import { resolveSectionCopy } from "@/lib/section-copy";
+import {
+  hasAbout,
+  hasFaqs,
+  hasPhone,
+  hasServices,
+  hasTestimonials,
+} from "@/lib/site-guards";
 
 interface SiteHeaderProps {
   config: SiteConfig;
@@ -29,18 +29,36 @@ interface SiteHeaderProps {
 export function SiteHeader({ config }: SiteHeaderProps) {
   const [open, setOpen] = useState(false);
   const phoneHref = buildTelHref(config.contact.phone);
+  const showPhone = hasPhone(config) && phoneHref;
+  const copy = resolveSectionCopy(config);
+
+  const navLinks = useMemo(
+    () =>
+      [
+        { href: "#services", label: "Hizmetler", visible: hasServices(config) },
+        { href: "#about", label: "Hakkımızda", visible: hasAbout(config) },
+        {
+          href: "#testimonials",
+          label: "Yorumlar",
+          visible: hasTestimonials(config),
+        },
+        { href: "#faq", label: "SSS", visible: hasFaqs(config) },
+        { href: "#contact", label: "İletişim", visible: true },
+      ].filter((link) => link.visible),
+    [config]
+  );
 
   return (
     <header className="sticky top-0 z-50 border-b border-border/60 bg-background/80 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
         <Link
           href="/"
-          className="text-lg font-semibold tracking-tight text-foreground"
+          className="min-w-0 shrink text-base font-semibold tracking-tight text-foreground sm:text-lg"
         >
-          {config.businessName}
+          <span className="block truncate">{config.businessName}</span>
         </Link>
 
-        <nav className="hidden items-center gap-8 md:flex">
+        <nav className="hidden items-center gap-6 md:flex lg:gap-8">
           {navLinks.map((link) => (
             <a
               key={link.href}
@@ -52,13 +70,16 @@ export function SiteHeader({ config }: SiteHeaderProps) {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
-          <Button asChild size="sm" className="hidden gap-2 sm:inline-flex">
-            <a href={phoneHref}>
-              <Phone className="size-4" />
-              Randevu Al
-            </a>
-          </Button>
+        <div className="flex shrink-0 items-center gap-2">
+          {showPhone ? (
+            <Button asChild size="sm" className="hidden gap-2 sm:inline-flex">
+              <a href={phoneHref}>
+                <Phone className="size-4" />
+                <span className="hidden lg:inline">{copy.hero.primaryCta}</span>
+                <span className="lg:hidden">Ara</span>
+              </a>
+            </Button>
+          ) : null}
           <Sheet open={open} onOpenChange={setOpen}>
             <SheetTrigger asChild>
               <Button
@@ -72,7 +93,7 @@ export function SiteHeader({ config }: SiteHeaderProps) {
             </SheetTrigger>
             <SheetContent side="right" className="w-full max-w-xs">
               <SheetHeader>
-                <SheetTitle>{config.businessName}</SheetTitle>
+                <SheetTitle className="pr-8">{config.businessName}</SheetTitle>
               </SheetHeader>
               <nav className="mt-8 flex flex-col gap-4">
                 {navLinks.map((link) => (
@@ -85,14 +106,13 @@ export function SiteHeader({ config }: SiteHeaderProps) {
                     {link.label}
                   </a>
                 ))}
-                <Button asChild className="mt-4 w-full">
-                  <a
-                    href={phoneHref}
-                    onClick={() => setOpen(false)}
-                  >
-                    Randevu Al
-                  </a>
-                </Button>
+                {showPhone ? (
+                  <Button asChild className="mt-4 w-full">
+                    <a href={phoneHref} onClick={() => setOpen(false)}>
+                      {copy.hero.primaryCta}
+                    </a>
+                  </Button>
+                ) : null}
               </nav>
             </SheetContent>
           </Sheet>

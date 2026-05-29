@@ -1,5 +1,12 @@
 import type { SiteConfig } from "@/types/site-config";
 import { themeToCssVariables } from "@/lib/theme";
+import {
+  hasAbout,
+  hasFaqs,
+  hasServices,
+  hasTestimonials,
+  hasWhatsApp,
+} from "@/lib/site-guards";
 import { SiteHeader } from "@/components/layout/SiteHeader";
 import { Footer } from "@/components/layout/Footer";
 import { WhatsAppButton } from "@/components/layout/WhatsAppButton";
@@ -25,15 +32,17 @@ export function SectorSite({ config }: SectorSiteProps) {
       <SiteHeader config={config} />
       <main className="flex-1">
         <HeroSection config={config} />
-        <ServicesSection config={config} />
-        <AboutSection config={config} />
-        <TestimonialsSection config={config} />
-        <FAQSection config={config} />
+        {hasServices(config) ? <ServicesSection config={config} /> : null}
+        {hasAbout(config) ? <AboutSection config={config} /> : null}
+        {hasTestimonials(config) ? (
+          <TestimonialsSection config={config} />
+        ) : null}
+        {hasFaqs(config) ? <FAQSection config={config} /> : null}
         <CTASection config={config} />
         <ContactSection config={config} />
       </main>
       <Footer config={config} />
-      <WhatsAppButton config={config} />
+      {hasWhatsApp(config) ? <WhatsAppButton config={config} /> : null}
     </div>
   );
 }

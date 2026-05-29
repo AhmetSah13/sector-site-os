@@ -1,69 +1,87 @@
 # Teslim Kalitesi Kontrol Listesi
 
-Bu liste, **sector-site-os** ile üretilen bir sektör sitesini müşteriye teslim etmeden önce tamamlanması gereken kontrolleri içerir.
+**sector-site-os** ile üretilen bir sektör sitesini müşteri demosu veya canlı teslim öncesi bu listeyi kullanın.
+
+## 0. Demo hazırlığı
+
+- [ ] `src/config/index.ts` → doğru `activeSiteConfig` seçildi
+- [ ] `npm run build` ve `npm run lint` hatasız
+- [ ] `npm run dev` ile mobil / tablet / desktop görünüm kontrol edildi
+- [ ] `.env.local` içinde `NEXT_PUBLIC_SITE_URL` ayarlı (production’da gerçek domain)
 
 ## 1. Sektör config
 
-- [ ] Doğru sektör dosyası `src/config/index.ts` içinde `activeSiteConfig` olarak seçildi
-- [ ] `businessName`, `slogan`, `description` müşteri onaylı metinlerle güncellendi
-- [ ] `contact.phone`, `email`, `address`, `city` gerçek bilgilerle dolduruldu
-- [ ] `contact.whatsapp` ülke koduyla birlikte rakamlardan oluşuyor (ör. `905321234567`)
-- [ ] `services`, `testimonials`, `faqs` içerikleri sektöre uygun ve yazım hatası yok
-- [ ] `theme` renkleri marka kimliğiyle uyumlu
-- [ ] `socialLinks` URL’leri canlı ve `https://` ile açılıyor
+- [ ] `businessName`, `slogan`, `description` demo veya müşteri metinleriyle güncel
+- [ ] `sections` — tüm section başlıkları ve CTA metinleri sektöre uygun (hardcoded component metni yok)
+- [ ] `about.bullets` dolduruldu (varsa About listesi)
+- [ ] `contact.phone`, `email`, `address`, `city` doğru
+- [ ] `contact.whatsapp` yalnızca rakam + ülke kodu (ör. `905321234567`)
+- [ ] `services`, `testimonials`, `faqs` — boş bırakılacaksa bilinçli (ilgili section gizlenir)
+- [ ] `theme` marka renkleriyle uyumlu
+- [ ] `socialLinks` URL’leri `https://` ile çalışıyor
 
 ## 2. SEO & metadata
 
-- [ ] `.env` veya deploy ortamında `NEXT_PUBLIC_SITE_URL` production domain’i ile ayarlandı
-- [ ] `seo.title` ve `seo.description` benzersiz ve 60 / 160 karakter hedefine yakın
-- [ ] `seo.keywords` hedef arama terimlerini kapsıyor
-- [ ] `seo.ogImage` eklendiyse `public/` altında 1200×630 önerilen görsel mevcut
-- [ ] `/sitemap.xml` production URL’de erişilebilir
-- [ ] `/robots.txt` sitemap satırını doğru domain ile gösteriyor
-- [ ] [Google Rich Results Test](https://search.google.com/test/rich-results) — JSON-LD hatasız (isteğe bağlı)
+- [ ] `seo.title` ve `seo.description` benzersiz
+- [ ] `seo.ogImage` varsa `public/` altında dosya mevcut (1200×630 önerilir)
+- [ ] `/sitemap.xml` erişilebilir
+- [ ] `/robots.txt` doğru sitemap URL’si gösteriyor
+- [ ] View Page Source → JSON-LD (`LocalBusiness`) mevcut
 
 ## 3. İletişim linkleri
 
-- [ ] **Telefon** (`tel:+90…`) mobilde arama ekranını açıyor
-- [ ] **E-posta** (`mailto:`) varsayılan mail istemcisini açıyor
-- [ ] **WhatsApp** (`wa.me/90…`) doğru numaraya yönleniyor ve ön mesaj okunabilir
-- [ ] **Harita** butonu Google Maps’te doğru adresi arıyor (generic `maps.google.com` otomatik düzeltilir)
+Tüm linkler `src/lib/links.ts` üzerinden üretilir:
+
+- [ ] **Telefon** → `tel:+90…` (mobilde arama açılır)
+- [ ] **E-posta** → `mailto:` geçerli adres
+- [ ] **WhatsApp** → `https://wa.me/90…` doğru numara + mesaj
+- [ ] **Harita** → Google Maps arama veya özel `mapUrl` (generic `maps.google.com` otomatik düzeltilir)
 
 ## 4. Görseller
 
-- [ ] Tüm içerik görselleri `next/image` (`SiteImage`) ile kullanılıyor
-- [ ] Her görselde anlamlı `alt` metni var (`about.imageAlt` veya başlık)
-- [ ] Görseller `public/` altında optimize edilmiş (WebP/AVIF önerilir)
-- [ ] Uzak (CDN) görseller kullanılıyorsa `next.config.ts` → `images.remotePatterns` tanımlı
+- [ ] İçerik görselleri yalnızca `SiteImage` / `next/image` ile (`about.image` opsiyonel)
+- [ ] Her görselde `alt` metni (`about.imageAlt` veya başlık)
+- [ ] Uzak görseller için `next.config.ts` → `images.remotePatterns`
 
-## 5. UI & erişilebilirlik
+## 5. UI & responsive
 
-- [ ] Mobil (375px), tablet ve masaüstü kırılımları kontrol edildi
-- [ ] Header menü ve WhatsApp butonu çakışmıyor
-- [ ] Tüm CTA’lar tıklanabilir ve odak halkası görünür
-- [ ] Form alanları `label` ile eşleşiyor
+- [ ] **Mobil (~375px):** header menü (sheet), hero butonları tam genişlik, WhatsApp FAB görünür
+- [ ] **Tablet (~768px):** grid’ler 2 sütun, padding dengeli
+- [ ] **Desktop (1280px+):** max-width container, nav linkleri görünür
+- [ ] Uzun işletme adı header’da taşmıyor (truncate)
+- [ ] Boş section yok (gizlenen bölümler menüde de görünmüyor)
 
 ## 6. Build & deploy
 
-- [ ] `npm run build` hatasız tamamlanıyor
-- [ ] `npm run lint` (varsa) temiz
-- [ ] Production’da favicon / marka varlıkları yüklü
-- [ ] Analytics veya domain DNS müşteri tarafında planlandı (proje dışı)
+- [ ] `npm run build` başarılı
+- [ ] `npm run start` ile production önizleme
+- [ ] Favicon / marka varlıkları (isteğe bağlı)
+- [ ] Müşteriye formun **demo** olduğu söylendi (backend yok)
 
 ## 7. Bilinçli kapsam dışı (MVP)
 
-- [ ] Müşteriye formun **demo** olduğu ve backend/CMS olmadığı bildirildi
-- [ ] İçerik güncellemelerinin config dosyası veya yeniden deploy ile yapılacağı netleştirildi
+- [ ] Backend, CMS, veritabanı eklenmedi
+- [ ] İçerik güncellemesi config + yeniden deploy ile yapılır
 
 ---
 
 **Hızlı komutlar**
 
 ```bash
+npm install
+npm run dev
 npm run build
 npm run start
-# Sitemap: http://localhost:3000/sitemap.xml
-# Robots:  http://localhost:3000/robots.txt
+npm run lint
 ```
 
-**İlgili dosyalar:** `src/lib/metadata.ts`, `src/lib/links.ts`, `src/app/sitemap.ts`, `src/app/robots.ts`
+**İlgili dosyalar**
+
+| Dosya | Rol |
+|-------|-----|
+| `src/lib/metadata.ts` | Open Graph, Twitter, canonical |
+| `src/lib/links.ts` | tel, mailto, WhatsApp, Maps |
+| `src/lib/section-copy.ts` | Section metinleri (config) |
+| `src/lib/site-guards.ts` | Boş veri / section gizleme |
+| `src/app/sitemap.ts` | Sitemap |
+| `src/app/robots.ts` | Robots |

@@ -12,8 +12,9 @@ export function normalizePhoneDigits(phone: string): string {
 }
 
 /** RFC 3966 — international tel link */
-export function buildTelHref(phone: string): string {
+export function buildTelHref(phone: string): string | undefined {
   const digits = normalizePhoneDigits(phone);
+  if (digits.length < 10) return undefined;
   return `tel:+${digits}`;
 }
 
@@ -22,8 +23,12 @@ export function getWhatsAppPhone(contact: ContactInfo): string {
   return normalizePhoneDigits(source);
 }
 
-export function buildWhatsAppUrl(phone: string, message?: string): string {
+export function buildWhatsAppUrl(
+  phone: string,
+  message?: string
+): string | undefined {
   const digits = normalizePhoneDigits(phone);
+  if (digits.length < 10) return undefined;
   const text = message ? `?text=${encodeURIComponent(message)}` : "";
   return `https://wa.me/${digits}${text}`;
 }
@@ -31,17 +36,18 @@ export function buildWhatsAppUrl(phone: string, message?: string): string {
 export function buildWhatsAppHref(
   contact: ContactInfo,
   message?: string
-): string {
+): string | undefined {
   return buildWhatsAppUrl(getWhatsAppPhone(contact), message);
 }
 
 export function buildMailtoHref(
   email: string,
   params?: { subject?: string; body?: string }
-): string {
+): string | undefined {
   const trimmed = email.trim();
-  const search = new URLSearchParams();
+  if (!trimmed.includes("@")) return undefined;
 
+  const search = new URLSearchParams();
   if (params?.subject) search.set("subject", params.subject);
   if (params?.body) search.set("body", params.body);
 
@@ -67,7 +73,11 @@ function isGenericGoogleMapsUrl(url: URL): boolean {
 export function buildMapsHref(
   contact: Pick<ContactInfo, "mapUrl" | "address" | "city">
 ): string {
-  const fallback = buildGoogleMapsSearchUrl(contact.address, contact.city);
+  const address = contact.address?.trim() ?? "";
+  const city = contact.city?.trim() ?? "";
+  const fallback = buildGoogleMapsSearchUrl(address, city);
+
+  if (!address && !city) return fallback;
 
   const raw = contact.mapUrl?.trim();
   if (!raw) return fallback;
@@ -82,8 +92,9 @@ export function buildMapsHref(
   }
 }
 
-export function normalizeExternalUrl(url: string): string {
+export function normalizeExternalUrl(url: string): string | undefined {
   const trimmed = url.trim();
+  if (!trimmed) return undefined;
   if (/^https?:\/\//i.test(trimmed)) return trimmed;
   return `https://${trimmed}`;
 }

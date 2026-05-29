@@ -6,7 +6,7 @@ Tek bir master template üzerinden farklı sektörlere (diş kliniği, kafe, spo
 
 ## Stack
 
-- [Next.js](https://nextjs.org) (App Router)
+- [Next.js](https://nextjs.org) 16 (App Router)
 - TypeScript
 - Tailwind CSS
 - [shadcn/ui](https://ui.shadcn.com)
@@ -22,28 +22,53 @@ npm install
 cp .env.example .env.local
 ```
 
-`.env.local` içinde production domain’inizi tanımlayın:
+`.env.local` örneği:
 
 ```env
-NEXT_PUBLIC_SITE_URL=https://www.ornek-musteri.com
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 ```
 
-Geliştirme sunucusu:
+Production deploy öncesi domain’i gerçek URL ile güncelleyin.
 
-```bash
-npm run dev
+## Geliştirme komutları
+
+| Komut | Açıklama |
+|-------|----------|
+| `npm run dev` | Geliştirme sunucusu ([http://localhost:3000](http://localhost:3000)) |
+| `npm run build` | Production build |
+| `npm run start` | Production sunucu (`build` sonrası) |
+| `npm run lint` | ESLint kontrolü |
+
+Build sonrası SEO dosyaları:
+
+- [http://localhost:3000/sitemap.xml](http://localhost:3000/sitemap.xml)
+- [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt)
+
+## Demo: sektör değiştirme
+
+Aktif müşteri/sektör `src/config/index.ts` içinden seçilir:
+
+```typescript
+import { cafeConfig } from "@/config/sectors/cafe";
+
+export const activeSiteConfig: SiteConfig = cafeConfig;
 ```
 
-Production build:
+Hazır sektörler: `dentist`, `cafe`, `gym`, `beauty`, `real-estate` (`realEstate.ts`).
 
-```bash
-npm run build
-npm run start
+Registry ile okuma:
+
+```typescript
+import { getSectorConfig } from "@/config";
+
+const config = getSectorConfig("gym");
 ```
+
+`npm run dev` ile sayfayı yenileyerek demo’yu gösterin.
 
 ## Sektör config mantığı
 
-Her müşteri / sektör için bir `SiteConfig` objesi tanımlanır. Örnek yapı:
+Her sektör `SiteConfig` tipinde bir dosyadır:
 
 ```
 src/config/sectors/
@@ -54,75 +79,49 @@ src/config/sectors/
   realEstate.ts
 ```
 
-Aktif site `src/config/index.ts` dosyasından seçilir:
+`SectorSite` → section bileşenleri (`HeroSection`, `ServicesSection`, …) yalnızca `config` prop’undan render olur. Section başlıkları ve CTA metinleri `config.sections` içinde tanımlanır; boş `services` / `testimonials` / `faqs` dizilerinde ilgili bölüm otomatik gizlenir.
 
-```typescript
-import { cafeConfig } from "@/config/sectors/cafe";
-
-export const activeSiteConfig: SiteConfig = cafeConfig;
-```
-
-Tüm sektörler registry üzerinden de erişilebilir:
-
-```typescript
-import { getSectorConfig } from "@/config";
-
-const config = getSectorConfig("gym");
-```
-
-`SectorSite` bileşeni bu config’i alır; section’lar (`HeroSection`, `ServicesSection`, …) içeriği otomatik render eder. Tasarım ve layout sektörler arasında aynı kalır, yalnızca metin, tema renkleri ve iletişim bilgileri değişir.
-
-### Config alanları
+### Önemli config alanları
 
 | Alan | Açıklama |
 |------|----------|
-| `businessName`, `sector`, `slogan`, `description` | Marka ve hero metinleri |
+| `businessName`, `slogan`, `description` | Hero ve marka metinleri |
 | `contact` | Telefon, e-posta, adres, WhatsApp, harita |
-| `theme` | CSS değişkenleri (primary, accent, gradient) |
-| `services`, `testimonials`, `faqs` | Sayfa section içerikleri |
-| `about` | Hakkımızda metni; isteğe bağlı `image` (`/public/…`) |
-| `socialLinks` | Sosyal medya URL’leri |
-| `seo` | Title, description, keywords, `ogImage`, `twitterHandle` |
+| `theme` | Renkler (CSS değişkenleri) |
+| `services`, `testimonials`, `faqs` | Liste içerikleri |
+| `about` | Hakkımızda; `bullets`, isteğe bağlı `image` |
+| `sections` | Section başlıkları ve CTA metinleri |
+| `socialLinks` | Sosyal medya |
+| `seo` | Metadata, Open Graph, Twitter |
 
-## SEO
+İletişim linkleri `src/lib/links.ts` üzerinden normalize edilir (`tel:+90…`, `mailto:`, `wa.me`, Google Maps arama).
 
-Metadata `src/lib/metadata.ts` üzerinden config’den üretilir (Open Graph, Twitter, canonical).
+## Yeni sektör config’i eklemek
 
-- `src/app/sitemap.ts` — `/sitemap.xml`
-- `src/app/robots.ts` — `/robots.txt`
-- `src/components/seo/JsonLd.tsx` — `LocalBusiness` yapılandırılmış veri
+1. `src/config/sectors/yeni-sektor.ts` oluşturun — `SiteConfig` tipine uygun doldurun (`sections` ve `about.bullets` dahil).
+2. `src/config/index.ts` → `sectorConfigs` ve export listesine ekleyin.
+3. Gerekirse `src/lib/icons.ts` içine hizmet ikon adlarını ekleyin.
+4. `activeSiteConfig` import’unu yeni config’e çevirin.
+5. `npm run build` ve [docs/DELIVERY_CHECKLIST.md](docs/DELIVERY_CHECKLIST.md) maddelerini tamamlayın.
 
-İletişim linkleri merkezi olarak `src/lib/links.ts` içinde normalize edilir (`tel:`, `mailto:`, `wa.me`, Google Maps).
-
-Görseller için proje standardı: `src/components/shared/SiteImage.tsx` (`next/image` sarmalayıcısı).
-
-## Teslim öncesi kontrol
-
-Müşteri teslimi için: **[docs/DELIVERY_CHECKLIST.md](docs/DELIVERY_CHECKLIST.md)**
-
-## Proje yapısı (özet)
+## Proje yapısı
 
 ```
 src/
-  app/              # layout, page, sitemap, robots
-  config/           # activeSiteConfig + sector dosyaları
+  app/              layout, page, sitemap, robots
+  config/           activeSiteConfig + sector dosyaları
   components/
-    site/           # SectorSite master template
-    sections/       # Hero, Services, About, …
-    layout/         # Header, Footer, WhatsApp
-    shared/         # FadeIn, SiteImage, …
-  lib/              # metadata, links, theme, icons
-  types/            # site-config.ts
+    site/           SectorSite
+    sections/       Hero, Services, About, …
+    layout/         Header, Footer, WhatsApp
+    seo/            JsonLd
+    shared/         FadeIn, SiteImage, …
+  lib/              metadata, links, section-copy, site-guards
+  types/            site-config.ts
+docs/
+  DELIVERY_CHECKLIST.md
 ```
 
-## Yeni sektör eklemek
+## Teslim kontrolü
 
-1. `src/config/sectors/yeni-sektor.ts` oluşturun (`SiteConfig` tipine uygun).
-2. `src/config/index.ts` içinde `sectorConfigs` ve export listesine ekleyin.
-3. Gerekirse `src/lib/icons.ts` içine hizmet ikonlarını ekleyin.
-4. `activeSiteConfig` import’unu yeni dosyaya çevirin.
-5. `docs/DELIVERY_CHECKLIST.md` maddelerini tamamlayın.
-
-## Lisans
-
-Private / proje sahibine aittir.
+Müşteri demosu / teslim öncesi: **[docs/DELIVERY_CHECKLIST.md](docs/DELIVERY_CHECKLIST.md)**

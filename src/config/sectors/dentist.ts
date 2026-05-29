@@ -146,6 +146,47 @@ export const dentistConfig: SiteConfig = {
       { label: "Memnuniyet", value: "%98" },
     ],
     imageAlt: "Modern diş kliniği tedavi odası",
+    bullets: [
+      "Steril ve modern klinik ortamı",
+      "Kişiye özel tedavi planı",
+      "Şeffaf fiyatlandırma",
+    ],
+  },
+  sections: {
+    hero: {
+      badge: "Ücretsiz ilk muayene",
+      primaryCta: "Randevu Oluştur",
+      secondaryCta: "Hizmetlerimiz",
+    },
+    services: {
+      eyebrow: "Hizmetler",
+      title: "Size özel tedavi çözümleri",
+      description:
+        "Deneyimli ekibimiz ve modern ekipmanlarımızla kapsamlı hizmet sunuyoruz.",
+    },
+    testimonials: {
+      eyebrow: "Yorumlar",
+      title: "Hastalarımız ne diyor?",
+      description: "Binlerce mutlu hastanın güvenini kazandık.",
+    },
+    faq: {
+      eyebrow: "SSS",
+      title: "Sık sorulan sorular",
+      description: "Merak ettiklerinizin yanıtları burada.",
+    },
+    contact: {
+      eyebrow: "İletişim",
+      title: "Randevu ve bilgi için bize ulaşın",
+      description:
+        "Formu doldurun veya doğrudan arayın — en kısa sürede dönüş yapalım.",
+    },
+    cta: {
+      title: "Sağlıklı gülüşünüz bir randevu uzağınızda",
+      description:
+        "Ücretsiz ilk muayene için hemen iletişime geçin. Ekibimiz size en uygun zamanı ayarlasın.",
+      callLabel: "Hemen Ara",
+      whatsappLabel: "WhatsApp ile yazın",
+    },
   },
   seo: {
     title: "Dentavia Klinik | İstanbul Diş Kliniği",

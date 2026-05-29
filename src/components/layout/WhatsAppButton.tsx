@@ -4,6 +4,7 @@ import { MessageCircle } from "lucide-react";
 import { motion } from "framer-motion";
 import type { SiteConfig } from "@/types/site-config";
 import { buildWhatsAppHref } from "@/lib/links";
+import { hasWhatsApp } from "@/lib/site-guards";
 import { cn } from "@/lib/utils";
 
 interface WhatsAppButtonProps {
@@ -16,6 +17,8 @@ export function WhatsAppButton({ config, className }: WhatsAppButtonProps) {
     config.contact,
     `Merhaba, ${config.businessName} web sitesinden yazıyorum.`
   );
+
+  if (!hasWhatsApp(config) || !href) return null;
 
   return (
     <motion.a

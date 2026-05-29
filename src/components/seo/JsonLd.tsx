@@ -1,6 +1,12 @@
 import type { SiteConfig } from "@/types/site-config";
-import { buildMapsHref, buildTelHref, getWhatsAppPhone } from "@/lib/links";
+import {
+  buildMapsHref,
+  buildTelHref,
+  getWhatsAppPhone,
+  normalizeExternalUrl,
+} from "@/lib/links";
 import { getSiteUrl } from "@/lib/site-url";
+import { hasSocialLinks } from "@/lib/site-guards";
 
 interface JsonLdProps {
   config: SiteConfig;
@@ -8,6 +14,8 @@ interface JsonLdProps {
 
 export function JsonLd({ config }: JsonLdProps) {
   const { contact } = config;
+  const telHref = buildTelHref(contact.phone);
+  const whatsappDigits = getWhatsAppPhone(contact);
 
   const schema = {
     "@context": "https://schema.org",
@@ -15,25 +23,39 @@ export function JsonLd({ config }: JsonLdProps) {
     name: config.businessName,
     description: config.description,
     url: getSiteUrl(),
-    telephone: buildTelHref(contact.phone).replace("tel:", ""),
-    email: contact.email.trim(),
-    address: {
-      "@type": "PostalAddress",
-      streetAddress: contact.address,
-      addressLocality: contact.city,
-      addressCountry: "TR",
-    },
-    sameAs: config.socialLinks.map((l) => l.url),
+    ...(telHref ? { telephone: telHref.replace("tel:", "") } : {}),
+    ...(contact.email?.trim()
+      ? { email: contact.email.trim() }
+      : {}),
+    ...((contact.address || contact.city) && {
+      address: {
+        "@type": "PostalAddress",
+        streetAddress: contact.address,
+        addressLocality: contact.city,
+        addressCountry: "TR",
+      },
+    }),
+    ...(hasSocialLinks(config)
+      ? {
+          sameAs: config.socialLinks
+            .map((l) => normalizeExternalUrl(l.url))
+            .filter(Boolean),
+        }
+      : {}),
     ...(contact.workingHours
       ? { openingHours: contact.workingHours }
       : {}),
     hasMap: buildMapsHref(contact),
-    contactPoint: {
-      "@type": "ContactPoint",
-      telephone: `+${getWhatsAppPhone(contact)}`,
-      contactType: "customer service",
-      availableLanguage: ["Turkish", "English"],
-    },
+    ...(whatsappDigits.length >= 10
+      ? {
+          contactPoint: {
+            "@type": "ContactPoint",
+            telephone: `+${whatsappDigits}`,
+            contactType: "customer service",
+            availableLanguage: ["Turkish", "English"],
+          },
+        }
+      : {}),
   };
 
   return (

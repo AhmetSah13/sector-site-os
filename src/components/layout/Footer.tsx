@@ -3,6 +3,11 @@ import Link from "next/link";
 import type { SiteConfig, SocialPlatform } from "@/types/site-config";
 import { Separator } from "@/components/ui/separator";
 import { normalizeExternalUrl } from "@/lib/links";
+import {
+  hasAbout,
+  hasFaqs,
+  hasServices,
+} from "@/lib/site-guards";
 
 function IconInstagram({ className }: { className?: string }) {
   return (
@@ -63,13 +68,6 @@ const socialIcons: Record<SocialPlatform, ComponentType<{ className?: string }>>
   tiktok: IconTiktok,
 };
 
-const footerLinks = [
-  { href: "#services", label: "Hizmetler" },
-  { href: "#about", label: "Hakkımızda" },
-  { href: "#faq", label: "SSS" },
-  { href: "#contact", label: "İletişim" },
-];
-
 interface FooterProps {
   config: SiteConfig;
 }
@@ -77,60 +75,82 @@ interface FooterProps {
 export function Footer({ config }: FooterProps) {
   const year = new Date().getFullYear();
 
+  const footerLinks = [
+    { href: "#services", label: "Hizmetler", visible: hasServices(config) },
+    { href: "#about", label: "Hakkımızda", visible: hasAbout(config) },
+    { href: "#faq", label: "SSS", visible: hasFaqs(config) },
+    { href: "#contact", label: "İletişim", visible: true },
+  ].filter((link) => link.visible);
+
+  const socialLinks = config.socialLinks
+    .map((link) => ({
+      ...link,
+      href: normalizeExternalUrl(link.url),
+    }))
+    .filter((link) => link.href);
+
   return (
     <footer className="border-t border-border bg-muted/30">
-      <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
-        <div className="grid gap-10 md:grid-cols-3">
-          <div>
+      <div className="mx-auto max-w-7xl px-4 py-10 sm:py-12 lg:px-8">
+        <div className="grid gap-8 sm:grid-cols-2 md:gap-10 lg:grid-cols-3">
+          <div className="sm:col-span-2 lg:col-span-1">
             <Link href="/" className="text-lg font-semibold">
               {config.businessName}
             </Link>
             <p className="mt-3 max-w-xs text-sm leading-relaxed text-muted-foreground">
               {config.slogan}
             </p>
-            <div className="mt-4 flex gap-3">
-              {config.socialLinks.map((link) => {
-                const Icon = socialIcons[link.platform];
-                return (
-                  <a
-                    key={link.platform}
-                    href={normalizeExternalUrl(link.url)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex size-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
-                    aria-label={link.label ?? link.platform}
-                  >
-                    <Icon className="size-4" />
-                  </a>
-                );
-              })}
-            </div>
+            {socialLinks.length > 0 ? (
+              <div className="mt-4 flex flex-wrap gap-3">
+                {socialLinks.map((link) => {
+                  const Icon = socialIcons[link.platform];
+                  return (
+                    <a
+                      key={`${link.platform}-${link.url}`}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex size-9 items-center justify-center rounded-lg border border-border bg-background text-muted-foreground transition-colors hover:border-primary/30 hover:text-primary"
+                      aria-label={link.label ?? link.platform}
+                    >
+                      <Icon className="size-4" />
+                    </a>
+                  );
+                })}
+              </div>
+            ) : null}
           </div>
 
-          <div>
-            <p className="text-sm font-medium">Hızlı bağlantılar</p>
-            <ul className="mt-4 space-y-2">
-              {footerLinks.map((link) => (
-                <li key={link.href}>
-                  <a
-                    href={link.href}
-                    className="text-sm text-muted-foreground transition-colors hover:text-foreground"
-                  >
-                    {link.label}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+          {footerLinks.length > 0 ? (
+            <div>
+              <p className="text-sm font-medium">Hızlı bağlantılar</p>
+              <ul className="mt-4 space-y-2">
+                {footerLinks.map((link) => (
+                  <li key={link.href}>
+                    <a
+                      href={link.href}
+                      className="text-sm text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      {link.label}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ) : null}
 
           <div>
             <p className="text-sm font-medium">İletişim</p>
             <ul className="mt-4 space-y-2 text-sm text-muted-foreground">
-              <li>{config.contact.phone}</li>
-              <li>{config.contact.email}</li>
-              <li>
-                {config.contact.address}, {config.contact.city}
-              </li>
+              {config.contact.phone ? <li>{config.contact.phone}</li> : null}
+              {config.contact.email ? <li>{config.contact.email}</li> : null}
+              {config.contact.address || config.contact.city ? (
+                <li>
+                  {[config.contact.address, config.contact.city]
+                    .filter(Boolean)
+                    .join(", ")}
+                </li>
+              ) : null}
             </ul>
           </div>
         </div>

@@ -137,6 +137,47 @@ export const cafeConfig: SiteConfig = {
       { label: "Google puanı", value: "4.9" },
     ],
     imageAlt: "Sıcak kahve ve brunch masası",
+    bullets: [
+      "Günlük taze kavrum çekirdekler",
+      "Vegan ve glutensiz seçenekler",
+      "Ücretsiz Wi-Fi ve çalışma köşeleri",
+    ],
+  },
+  sections: {
+    hero: {
+      badge: "Moda'da üçüncü dalga kahve",
+      primaryCta: "Masa Ayırt",
+      secondaryCta: "Menüyü Gör",
+    },
+    services: {
+      eyebrow: "Menü",
+      title: "Kahve, brunch ve atıştırmalıklar",
+      description:
+        "Özel kavrum çekirdekler ve ev yapımı tatlılarla günün her anına eşlik ediyoruz.",
+    },
+    testimonials: {
+      eyebrow: "Yorumlar",
+      title: "Misafirlerimiz ne diyor?",
+      description: "Moda'nın favori kahve durağından gerçek yorumlar.",
+    },
+    faq: {
+      eyebrow: "SSS",
+      title: "Sık sorulan sorular",
+      description: "Rezervasyon, menü ve etkinlikler hakkında bilgiler.",
+    },
+    contact: {
+      eyebrow: "İletişim",
+      title: "Bize ulaşın veya rezervasyon yapın",
+      description:
+        "Grup rezervasyonu ve catering talepleri için formu doldurun veya WhatsApp'tan yazın.",
+    },
+    cta: {
+      title: "Bir sonraki kahveniz burada",
+      description:
+        "Brunch ve özel etkinlikler için yerinizi ayırtın. Sizi ağırlamaktan mutluluk duyarız.",
+      callLabel: "Hemen Ara",
+      whatsappLabel: "WhatsApp ile yazın",
+    },
   },
   seo: {
     title: "Kahve Durağı | Moda Kahve & Brunch",

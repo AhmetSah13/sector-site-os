@@ -14,6 +14,8 @@ import {
   buildMapsHref,
   buildTelHref,
 } from "@/lib/links";
+import { resolveSectionCopy } from "@/lib/section-copy";
+import { hasEmail, hasPhone } from "@/lib/site-guards";
 
 interface ContactSectionProps {
   config: SiteConfig;
@@ -21,6 +23,7 @@ interface ContactSectionProps {
 
 export function ContactSection({ config }: ContactSectionProps) {
   const { contact } = config;
+  const copy = resolveSectionCopy(config);
   const phoneHref = buildTelHref(contact.phone);
   const emailHref = buildMailtoHref(contact.email, {
     subject: `${config.businessName} — Web sitesi iletişim`,
@@ -31,9 +34,9 @@ export function ContactSection({ config }: ContactSectionProps) {
     <SectionShell id="contact">
       <FadeIn>
         <SectionHeading
-          eyebrow="İletişim"
-          title="Randevu ve bilgi için bize ulaşın"
-          description="Formu doldurun veya doğrudan arayın — en kısa sürede dönüş yapalım."
+          eyebrow={copy.contact.eyebrow}
+          title={copy.contact.title}
+          description={copy.contact.description}
         />
       </FadeIn>
 
@@ -45,28 +48,48 @@ export function ContactSection({ config }: ContactSectionProps) {
                 <CardTitle className="text-base">İletişim bilgileri</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
-                <a
-                  href={phoneHref}
-                  className="flex items-start gap-3 text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <Phone className="mt-0.5 size-4 shrink-0 text-primary" />
-                  <span>{contact.phone}</span>
-                </a>
-                <a
-                  href={emailHref}
-                  className="flex items-start gap-3 text-muted-foreground transition-colors hover:text-foreground"
-                >
-                  <Mail className="mt-0.5 size-4 shrink-0 text-primary" />
-                  <span>{contact.email}</span>
-                </a>
-                <div className="flex items-start gap-3 text-muted-foreground">
-                  <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
-                  <span>
-                    {contact.address}
-                    <br />
-                    {contact.city}
-                  </span>
-                </div>
+                {contact.phone ? (
+                  hasPhone(config) && phoneHref ? (
+                    <a
+                      href={phoneHref}
+                      className="flex items-start gap-3 text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <Phone className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <span>{contact.phone}</span>
+                    </a>
+                  ) : (
+                    <div className="flex items-start gap-3 text-muted-foreground">
+                      <Phone className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <span>{contact.phone}</span>
+                    </div>
+                  )
+                ) : null}
+                {contact.email ? (
+                  hasEmail(config) && emailHref ? (
+                    <a
+                      href={emailHref}
+                      className="flex items-start gap-3 text-muted-foreground transition-colors hover:text-foreground"
+                    >
+                      <Mail className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <span>{contact.email}</span>
+                    </a>
+                  ) : (
+                    <div className="flex items-start gap-3 text-muted-foreground">
+                      <Mail className="mt-0.5 size-4 shrink-0 text-primary" />
+                      <span>{contact.email}</span>
+                    </div>
+                  )
+                ) : null}
+                {(contact.address || contact.city) && (
+                  <div className="flex items-start gap-3 text-muted-foreground">
+                    <MapPin className="mt-0.5 size-4 shrink-0 text-primary" />
+                    <span>
+                      {contact.address}
+                      {contact.address && contact.city ? <br /> : null}
+                      {contact.city}
+                    </span>
+                  </div>
+                )}
                 {contact.workingHours ? (
                   <div className="flex items-start gap-3 text-muted-foreground">
                     <Clock className="mt-0.5 size-4 shrink-0 text-primary" />
@@ -140,8 +163,8 @@ export function ContactSection({ config }: ContactSectionProps) {
                   Mesaj Gönder
                 </Button>
                 <p className="text-xs text-muted-foreground">
-                  MVP aşamasında form demo amaçlıdır; backend entegrasyonu
-                  sonraki sürümde eklenecektir.
+                  Demo sürüm: form gönderimi simüledir; backend entegrasyonu
+                  sonraki aşamada eklenecektir.
                 </p>
               </form>
             </CardContent>
