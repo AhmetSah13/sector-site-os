@@ -1,39 +1,29 @@
-import { dentistConfig } from "@/config/sectors/dentist";
-import type { SiteConfig, SectorId } from "@/types/site-config";
-import {
-  sectorRegistry,
-  getSectorConfigBySlug,
-} from "@/config/sector-registry";
-
 export {
-  sectorRegistry,
-  getSectorEntryBySlug,
-  getSectorConfigBySlug,
-  isDemoSectorSlug,
+  siteRegistry,
+  demoRegistry,
+  clientRegistry,
   demoSectorSlugs,
+  clientSiteKeys,
+  getDemoEntryBySlug,
+  getClientEntryByKey,
+  getDemoConfigBySlug,
+  getClientConfigByKey,
+  isDemoSectorSlug,
+  isClientSiteKey,
+  type SiteRegistryEntry,
+  type SiteRegistryType,
   type DemoSectorSlug,
-  type SectorRegistryEntry,
-} from "@/config/sector-registry";
+  type ClientSiteKey,
+  /** @deprecated */ sectorRegistry,
+  /** @deprecated */ getSectorEntryBySlug,
+  /** @deprecated */ getSectorConfigBySlug,
+} from "@/config/site-registry";
 
-/**
- * Active site configuration for the root `/` route.
- * Swap this import when building for a different sector/client.
- */
-export const activeSiteConfig: SiteConfig = dentistConfig;
+export { serviceConfig } from "@/config/service";
 
-/** All sector configs keyed by sector id (registry-backed) */
-export const sectorConfigs: Record<SectorId, SiteConfig> = Object.fromEntries(
-  sectorRegistry.map((entry) => [entry.key, entry.config])
-) as Record<SectorId, SiteConfig>;
-
-export function getSectorConfig(sector: SectorId): SiteConfig {
-  return getSectorConfigBySlug(sector) ?? dentistConfig;
-}
-
-export {
-  dentistConfig,
-} from "@/config/sectors/dentist";
-export { cafeConfig } from "@/config/sectors/cafe";
-export { gymConfig } from "@/config/sectors/gym";
-export { beautyConfig } from "@/config/sectors/beauty";
-export { realEstateConfig } from "@/config/sectors/realEstate";
+export { dentistConfig } from "@/config/sites/demos/dentist";
+export { cafeConfig } from "@/config/sites/demos/cafe";
+export { gymConfig } from "@/config/sites/demos/gym";
+export { beautyConfig } from "@/config/sites/demos/beauty";
+export { realEstateConfig } from "@/config/sites/demos/realEstate";
+export { sampleClientConfig } from "@/config/sites/clients/sampleClient";

@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, LayoutGrid } from "lucide-react";
-import { sectorRegistry } from "@/config/sector-registry";
+import { demoRegistry } from "@/config/site-registry";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -37,7 +37,7 @@ export function DemoGallery() {
         </div>
 
         <ul className="mt-12 grid gap-4 sm:grid-cols-2 lg:mt-16 lg:grid-cols-3">
-          {sectorRegistry.map((entry) => (
+          {demoRegistry.map((entry) => (
             <li key={entry.key}>
               <Card className="flex h-full flex-col border-border/80 shadow-sm transition-shadow hover:shadow-md">
                 <CardHeader>

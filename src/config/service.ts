@@ -1,16 +1,16 @@
 import type { ServiceConfig } from "@/types/service-config";
 
 export const serviceConfig: ServiceConfig = {
-  name: "sector-site-os",
+  name: "Ahmet Şahin Orkin",
   title: "Küçük işletmeler için modern web siteleri",
   description:
-    "Sektörünüze uygun hazır altyapıyı işletmenize özel içerik, renk ve görsellerle kısa sürede yayına alıyorum.",
-  email: "hello@sectorsite.dev",
-  whatsapp: "905551234567",
+    "Yazılım mühendisliği öğrencisi ve web geliştirici olarak; Next.js tabanlı sektör altyapısını işletmenize özel içerik, renk ve iletişimle kısa sürede yayına hazırlıyorum.",
+  email: "ahmetbeys2g@gmail.com",
+  whatsapp: "",
   socialLinks: [
     {
       platform: "linkedin",
-      url: "https://linkedin.com/in/ahmetsah",
+      url: "https://www.linkedin.com/in/ahmet-orkin-2aa526296/",
       label: "LinkedIn",
     },
     {
@@ -22,7 +22,7 @@ export const serviceConfig: ServiceConfig = {
   hero: {
     headline: "Küçük işletmeler için hızlı, modern ve mobil uyumlu web siteleri",
     subheadline:
-      "Sektörünüze uygun hazır altyapıyı işletmenize özel içerik, renk ve görsellerle kısa sürede yayına alıyorum.",
+      "Hazır sektör altyapısını (Next.js, React, Tailwind) işletmenize özel metin, renk, görsel ve WhatsApp odaklı iletişimle uyarlayıp kısa sürede canlıya alıyorum.",
     primaryCta: { label: "Demoları Gör", href: "/demos" },
     secondaryCta: { label: "Teklif Al", href: "#contact" },
   },
@@ -31,63 +31,63 @@ export const serviceConfig: ServiceConfig = {
       id: "mobile",
       title: "Mobil uyumlu tasarım",
       description:
-        "Telefon, tablet ve masaüstünde tutarlı, okunaklı ve hızlı deneyim.",
+        "Tailwind CSS ile telefon, tablet ve masaüstünde net, hızlı ve tutarlı bir deneyim.",
     },
     {
       id: "whatsapp",
       title: "WhatsApp odaklı iletişim",
       description:
-        "Müşterileriniz tek tıkla size ulaşır; arama ve harita linkleri hazır.",
+        "Tek tıkla mesaj, arama ve harita yönlendirmesi — müşteriniz size anında ulaşır.",
     },
     {
       id: "seo",
-      title: "SEO’ya uygun sayfa yapısı",
+      title: "SEO uyumlu yapı",
       description:
-        "Metadata, sitemap ve temiz HTML ile arama motorlarına hazır altyapı.",
+        "Metadata, sitemap ve robots.txt ile arama motorlarına hazır, düzenli sayfa mimarisi.",
     },
     {
       id: "delivery",
       title: "Hızlı teslim",
       description:
-        "Sektör şablonu sayesinde içerik toplandıktan sonra kısa sürede yayın.",
+        "Sektör şablonu sayesinde içerikleriniz toplandıktan sonra kısa döngüde yayın.",
     },
     {
       id: "sector",
       title: "Sektöre göre özelleştirme",
       description:
-        "Diş kliniği, kafe, spor salonu, güzellik ve emlak için hazır demo tabanı.",
+        "Diş kliniği, kafe, spor salonu, güzellik ve emlak için canlı demo tabanları hazır.",
     },
     {
       id: "launch",
       title: "Yayına alma desteği",
       description:
-        "Domain bağlama ve production deploy sürecinde yanınızdayım.",
+        "Vercel veya benzeri platformda deploy ve domain yönlendirme sürecinde rehberlik.",
     },
   ],
   processSteps: [
     {
       step: 1,
-      title: "İşletme bilgilerini alıyorum",
+      title: "İşletme bilgilerinizi alıyorum",
       description:
-        "Hizmetleriniz, iletişim bilgileriniz, görseller ve marka tercihlerinizi topluyoruz.",
+        "Hizmetler, iletişim, görseller ve marka tercihlerinizi netleştiriyoruz.",
     },
     {
       step: 2,
-      title: "Sektöre uygun demo altyapısını seçiyorum",
+      title: "Sektöre uygun altyapıyı seçiyorum",
       description:
-        "İşletmenize en yakın sektör şablonunu temel alarak yapıyı belirliyorum.",
+        "İşletmenize en yakın demo şablonunu temel alarak site iskeletini belirliyorum.",
     },
     {
       step: 3,
-      title: "İçerik, renk ve görselleri uyarlıyorum",
+      title: "İçerik ve görsel uyarlaması",
       description:
         "Metinler, tema renkleri ve görseller markanıza göre özelleştirilir.",
     },
     {
       step: 4,
-      title: "Siteyi test edip yayına alıyorum",
+      title: "Test ve yayın",
       description:
-        "Mobil kontrol, link testleri ve SEO kontrollerinden sonra site canlıya alınır.",
+        "Mobil kontrol, link testleri ve temel SEO kontrollerinden sonra site yayına alınır.",
     },
   ],
   packages: [
@@ -95,11 +95,12 @@ export const serviceConfig: ServiceConfig = {
       id: "starter",
       name: "Başlangıç Site",
       priceLabel: "Teklif ile",
-      description: "Tek sayfa veya kompakt vitrin — hızlı online görünürlük.",
+      description:
+        "Yeni açılan veya hızlı dijital vitrin isteyen işletmeler için odaklı tek sayfa deneyimi.",
       highlights: [
-        "Hero + iletişim",
-        "WhatsApp & harita",
-        "Mobil uyumlu",
+        "Hero, hizmet özeti ve iletişim",
+        "WhatsApp ve harita entegrasyonu",
+        "Mobil öncelikli responsive tasarım",
       ],
     },
     {
@@ -107,50 +108,51 @@ export const serviceConfig: ServiceConfig = {
       name: "Kurumsal Site",
       priceLabel: "Teklif ile",
       description:
-        "Hizmetler, hakkımızda, SSS ve referanslarla tam kurumsal yapı.",
+        "Güven veren tam yapı: hizmetler, hakkımızda, yorumlar, SSS ve güçlü iletişim alanı.",
       highlights: [
-        "Tüm temel bölümler",
-        "SEO metadata",
-        "Sektör demosu tabanı",
+        "Çok bölümlü kurumsal landing",
+        "SEO metadata ve yapılandırılmış veri",
+        "Sektör demosu tabanlı hızlı kurulum",
       ],
       featured: true,
     },
     {
       id: "premium",
       name: "Premium Site",
-      priceLabel: "Özel teklif",
+      priceLabel: "İhtiyaca göre",
       description:
-        "Ek sayfalar, gelişmiş içerik ve öncelikli teslim ile genişletilmiş paket.",
+        "Ek içerik blokları, öncelikli iletişim ve genişletilmiş yayın desteği isteyen işletmeler için.",
       highlights: [
-        "Özel bölümler",
-        "Öncelikli destek",
-        "Deploy & domain yardımı",
+        "Kapsam genişletme ve ek bölümler",
+        "Öncelikli revizyon turu",
+        "Deploy, domain ve son kontrol desteği",
       ],
     },
   ],
   demoCta: {
-    title: "Sektör demolarını canlı inceleyin",
+    title: "Canlı sektör demolarını inceleyin",
     description:
-      "Diş kliniği, kafe, spor salonu, güzellik ve gayrimenkul için hazır demo siteleri tek tıkla açılır.",
+      "Aynı altyapının diş kliniği, kafe, spor salonu, güzellik ve emlak için nasıl göründüğünü demo galerisinde görebilirsiniz.",
     buttonLabel: "Demo galerisine git",
     href: "/demos",
   },
   contact: {
-    title: "Teklif ve bilgi için iletişime geçin",
+    title: "Projeniz için teklif alın",
     description:
-      "Projenizi kısaca anlatın; size uygun paket ve süre için geri dönüş yapayım.",
+      "İşletmenizi ve sektörünüzü kısaca yazın; size uygun paket ve tahmini süre için geri dönüş yapayım.",
     formNote:
-      "Form demo amaçlıdır; gönderim simüle edilir. Hızlı dönüş için WhatsApp tercih edilir.",
+      "Form demo amaçlıdır; gönderim simüle edilir. Hızlı dönüş için e-posta veya LinkedIn üzerinden de ulaşabilirsiniz.",
   },
   seo: {
-    title: "sector-site-os | Küçük işletmeler için web siteleri",
+    title: "Ahmet Şahin Orkin | Küçük işletmeler için web siteleri",
     description:
-      "Mobil uyumlu, SEO dostu ve sektöre özel web siteleri. Canlı demoları inceleyin, teklif alın.",
+      "Next.js ve React ile mobil uyumlu, SEO dostu, WhatsApp odaklı işletme siteleri. Sektör demolarını inceleyin, teklif alın.",
     keywords: [
+      "freelance web geliştirici",
       "küçük işletme web sitesi",
+      "next.js landing page",
       "sektörel web sitesi",
-      "mobil uyumlu site",
-      "istanbul web tasarım",
+      "mobil uyumlu web tasarım",
     ],
   },
 };

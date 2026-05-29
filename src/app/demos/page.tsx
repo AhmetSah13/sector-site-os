@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { DemoGallery } from "@/components/demos/DemoGallery";
 import { getSiteUrl } from "@/lib/site-url";
+import { requireAgencyMode } from "@/lib/require-agency-mode";
 
 export const metadata: Metadata = {
   title: "Sektör Demoları | sector-site-os",
@@ -20,5 +21,6 @@ export const metadata: Metadata = {
 };
 
 export default function DemosPage() {
+  requireAgencyMode();
   return <DemoGallery />;
 }

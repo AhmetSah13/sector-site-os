@@ -4,15 +4,56 @@ Tek bir master template üzerinden farklı sektörlere (diş kliniği, kafe, spo
 
 > Backend, CMS veya veritabanı yoktur. İçerik TypeScript config dosyalarından gelir.
 
-## Site yapısı
+## Deployment modları
 
-| Route | Açıklama |
-|-------|----------|
-| `/` | **Hizmet vitrini** — küçük işletmelere web sitesi satış landing page (`src/config/service.ts`) |
-| `/demos` | **Demo galeri** — sektör kartları ve önizleme linkleri |
-| `/demos/[sector]` | **Sektör demoları** — `SectorSite` + demo üst barı (ör. `/demos/dentist`) |
+`NEXT_PUBLIC_SITE_MODE` ile aynı repo iki modda çalışır:
 
-Müşteri teslim sitesi yalnızca `SectorSite` + sektör config kullanır; demo barı production’da eklenmez.
+| Mod | Env | `/` | `/demos` |
+|-----|-----|-----|----------|
+| **Agency** (varsayılan) | `agency` veya boş | Hizmet vitrini | Demo galeri + sektör demoları |
+| **Client** | `client` | Müşteri `SectorSite` | `404` (notFound) |
+
+Client modda ayrıca `NEXT_PUBLIC_SITE_KEY` gerekir (ör. `sample-client`).
+
+### Agency mode
+
+- `/` → `ServiceLanding` (`src/config/service.ts`)
+- `/demos` → demo galeri
+- `/demos/[sector]` → `SectorSite` + `DemoBanner`
+
+### Client mode
+
+- `/` → seçilen müşteri config’i ile yalnızca `SectorSite` (banner ve vitrin yok)
+- `/demos` ve `/demos/*` → erişilemez
+- Geçersiz `SITE_KEY` → `404`
+
+### Vercel environment variables
+
+**Ajans / portfolyo deploy:**
+
+```env
+NEXT_PUBLIC_SITE_URL=https://www.sizin-domain.com
+NEXT_PUBLIC_SITE_MODE=agency
+```
+
+**Müşteri deploy (örnek test):**
+
+```env
+NEXT_PUBLIC_SITE_URL=https://www.musteri-domain.com
+NEXT_PUBLIC_SITE_MODE=client
+NEXT_PUBLIC_SITE_KEY=sample-client
+```
+
+Yerel test:
+
+```bash
+# Agency (varsayılan)
+npm run dev
+
+# Client mode
+# .env.local içine NEXT_PUBLIC_SITE_MODE=client ve NEXT_PUBLIC_SITE_KEY=sample-client
+npm run dev
+```
 
 ## Stack
 
@@ -32,11 +73,7 @@ npm install
 cp .env.example .env.local
 ```
 
-`.env.local` örneği:
-
-```env
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-```
+`.env.local` için `.env.example` dosyasını kopyalayın.
 
 Production deploy öncesi domain’i gerçek URL ile güncelleyin.
 
@@ -54,55 +91,33 @@ Build sonrası SEO dosyaları:
 - [http://localhost:3000/sitemap.xml](http://localhost:3000/sitemap.xml)
 - [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt)
 
-## Demo sunumu (multi-sector routing)
+## Site registry
 
-Tüm sektör demoları tek galeri üzerinden açılır:
+Merkezi kayıt: `src/config/site-registry.ts`
 
-| URL | Açıklama |
-|-----|----------|
-| [/demos](http://localhost:3000/demos) | Demo galeri — sektör kartları |
-| `/demos/dentist` | Diş kliniği |
-| `/demos/cafe` | Kafe |
-| `/demos/gym` | Spor salonu |
-| `/demos/beauty` | Güzellik |
-| `/demos/real-estate` | Gayrimenkul |
+```
+src/config/sites/
+  demos/          # Sektör şablonları (agency /demos)
+    dentist.ts
+    cafe.ts
+    gym.ts
+    beauty.ts
+    realEstate.ts
+  clients/        # Müşteri production config’leri
+    sampleClient.ts   # Client mode test (sample-client)
+```
 
-Registry: `src/config/sector-registry.ts` (`key`, `label`, `description`, `config`).
+Her kayıt: `key`, `type` (`demo` | `client`), `label`, `description`, `config`.
 
-Hazır demo slug’ları: `dentist`, `cafe`, `gym`, `beauty`, `real-estate`.
+Agency demo URL’leri: `/demos/dentist`, `/demos/cafe`, `/demos/gym`, `/demos/beauty`, `/demos/real-estate`.
 
 ## Hizmet vitrini config
 
-Ana sayfa içeriği `src/config/service.ts` dosyasından gelir: iletişim, paketler, özellikler, süreç adımları ve sosyal linkler. Boş sosyal linkler otomatik gizlenir.
+Agency modda `/` içeriği `src/config/service.ts` dosyasından gelir.
 
-## Müşteri sitesi (tek sektör deploy)
+## Site config mantığı
 
-Tek müşteri için yalnızca ilgili sektör config’i kullanılır (`SectorSite`). Örnek referans: `src/config/index.ts` içindeki `activeSiteConfig` veya doğrudan sektör dosyası import’u.
-
-Registry ile okuma:
-
-```typescript
-import { getSectorConfig } from "@/config";
-
-const config = getSectorConfig("gym");
-```
-
-`npm run dev` ile sayfayı yenileyerek demo’yu gösterin.
-
-## Sektör config mantığı
-
-Her sektör `SiteConfig` tipinde bir dosyadır:
-
-```
-src/config/sectors/
-  dentist.ts
-  cafe.ts
-  gym.ts
-  beauty.ts
-  realEstate.ts
-```
-
-`SectorSite` → section bileşenleri (`HeroSection`, `ServicesSection`, …) yalnızca `config` prop’undan render olur. Section başlıkları ve CTA metinleri `config.sections` içinde tanımlanır; boş `services` / `testimonials` / `faqs` dizilerinde ilgili bölüm otomatik gizlenir.
+`SectorSite` → section bileşenleri yalnızca `SiteConfig` prop’undan render olur. Boş `services` / `testimonials` / `faqs` dizilerinde ilgili bölüm gizlenir.
 
 ### Önemli config alanları
 
@@ -119,26 +134,39 @@ src/config/sectors/
 
 İletişim linkleri `src/lib/links.ts` üzerinden normalize edilir (`tel:+90…`, `mailto:`, `wa.me`, Google Maps arama).
 
-## Yeni sektör config’i eklemek
+## Yeni demo config eklemek
 
-1. `src/config/sectors/yeni-sektor.ts` oluşturun — `SiteConfig` tipine uygun doldurun (`sections` ve `about.bullets` dahil).
-2. `src/config/index.ts` → `sectorConfigs` ve export listesine ekleyin.
-3. Gerekirse `src/lib/icons.ts` içine hizmet ikon adlarını ekleyin.
-4. `activeSiteConfig` import’unu yeni config’e çevirin.
-5. `npm run build` ve [docs/DELIVERY_CHECKLIST.md](docs/DELIVERY_CHECKLIST.md) maddelerini tamamlayın.
+1. `src/config/sites/demos/yeni-sektor.ts` — `SiteConfig` doldurun.
+2. `src/config/site-registry.ts` → `demoRegistry` dizisine ekleyin.
+3. Gerekirse `src/lib/icons.ts` güncelleyin.
+4. `npm run build` (agency mode).
+
+## Yeni müşteri config eklemek
+
+1. `src/config/sites/clients/musteri-adi.ts` oluşturun.
+2. `clientRegistry` içine `type: "client"` ile ekleyin (`key` = `NEXT_PUBLIC_SITE_KEY`).
+3. Vercel’de ayrı proje veya environment:
+   - `NEXT_PUBLIC_SITE_MODE=client`
+   - `NEXT_PUBLIC_SITE_KEY=musteri-adi`
+4. [docs/DELIVERY_CHECKLIST.md](docs/DELIVERY_CHECKLIST.md) maddelerini tamamlayın.
+
+`src/lib/site-mode.ts`: `getSiteMode()`, `isAgencyMode()`, `isClientMode()`, `getActiveClientSite()`.
 
 ## Proje yapısı
 
 ```
 src/
-  app/              layout, page (vitrin), demos, sitemap, robots
-  config/           service.ts, sector-registry, sectors/*
+  app/              page (mode-aware), demos, sitemap, robots
+  config/
+    service.ts
+    site-registry.ts
+    sites/demos/*
+    sites/clients/*
   components/
-    service/        ServiceLanding, ServiceHeader
-    site/           SectorSite (müşteri / demo siteleri)
-    demos/          DemoGallery, DemoBanner
-    sections/       Hero, Services, About, …
-  lib/              metadata, links, section-copy, site-guards
+    service/        ServiceLanding (agency only)
+    site/           SectorSite
+    demos/          DemoGallery, DemoBanner (agency demos only)
+  lib/              site-mode, metadata, links, …
   types/            site-config.ts, service-config.ts
 docs/
   DELIVERY_CHECKLIST.md
