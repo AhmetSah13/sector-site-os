@@ -87,6 +87,40 @@ Production deploy öncesi domain’i gerçek URL ile güncelleyin.
 | `npm run lint` | ESLint kontrolü |
 | `npm run validate:sites` | Demo/client config doğrulama (deploy öncesi) |
 
+## Yeni müşteri sitesi oluşturma
+
+İnteraktif script ile client config, görsel klasörü ve registry kaydı oluşturur:
+
+```bash
+npm run create:client
+```
+
+Script sorar: `businessName`, `clientKey` (slug), `sector`, base demo (`dentist` | `cafe` | `gym` | `beauty` | `real-estate` | `none`), slogan, description, iletişim bilgileri ve `primaryColor`.
+
+Oluşturulan dosyalar:
+
+- `src/config/sites/clients/{clientKey}.ts`
+- `public/images/clients/{clientKey}/`
+- `src/config/site-registry.ts` (otomatik güncelleme)
+- `src/config/index.ts` (export satırı)
+
+Duplicate slug veya mevcut dosya varsa script durur; üzerine yazmaz.
+
+Ardından:
+
+```bash
+npm run validate:sites
+npm run build
+npm run lint
+```
+
+Client mode test:
+
+```env
+NEXT_PUBLIC_SITE_MODE=client
+NEXT_PUBLIC_SITE_KEY={clientKey}
+```
+
 ## Config validation
 
 Deploy veya build öncesi tüm demo/client config’lerini doğrulayın:
@@ -164,7 +198,9 @@ Agency modda `/` içeriği `src/config/service.ts` dosyasından gelir.
 3. Gerekirse `src/lib/icons.ts` güncelleyin.
 4. `npm run build` (agency mode).
 
-## Yeni müşteri config eklemek
+## Yeni müşteri config eklemek (manuel)
+
+Otomasyon için `npm run create:client` kullanın. Manuel ekleme:
 
 1. `src/config/sites/clients/musteri-adi.ts` oluşturun.
 2. `clientRegistry` içine `type: "client"` ile ekleyin (`key` = `NEXT_PUBLIC_SITE_KEY`).

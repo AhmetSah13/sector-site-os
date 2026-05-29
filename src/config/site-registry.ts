@@ -4,6 +4,7 @@ import { gymConfig } from "@/config/sites/demos/gym";
 import { beautyConfig } from "@/config/sites/demos/beauty";
 import { realEstateConfig } from "@/config/sites/demos/realEstate";
 import { sampleClientConfig } from "@/config/sites/clients/sampleClient";
+import { testDentalConfig } from "@/config/sites/clients/test-dental";
 import type { SiteConfig } from "@/types/site-config";
 
 export type SiteRegistryType = "demo" | "client";
@@ -77,6 +78,13 @@ export const clientRegistry = [
     description:
       "Client mode deploy testi — gerçek müşteri değil, örnek diş kliniği config’i.",
     config: sampleClientConfig,
+  },
+  {
+    key: "test-dental",
+    type: "client",
+    label: "Test Detntal Clinic",
+    description: "Dişçilik",
+    config: testDentalConfig,
   },
 ] as const satisfies readonly SiteRegistryEntry[];
 

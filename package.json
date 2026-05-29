@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "eslint",
-    "validate:sites": "tsx scripts/validate-sites.ts"
+    "validate:sites": "tsx scripts/validate-sites.ts",
+    "create:client": "tsx scripts/create-client-site.ts"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

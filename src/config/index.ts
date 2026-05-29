@@ -27,3 +27,4 @@ export { gymConfig } from "@/config/sites/demos/gym";
 export { beautyConfig } from "@/config/sites/demos/beauty";
 export { realEstateConfig } from "@/config/sites/demos/realEstate";
 export { sampleClientConfig } from "@/config/sites/clients/sampleClient";
+export { testDentalConfig } from "@/config/sites/clients/test-dental";
