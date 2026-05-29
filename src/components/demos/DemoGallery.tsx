@@ -32,7 +32,7 @@ export function DemoGallery() {
             canlı önizlemeyi açın.
           </p>
           <Button asChild variant="outline" size="sm" className="mt-6">
-            <Link href="/">Ana siteye dön</Link>
+            <Link href="/">Hizmet sayfasına dön</Link>
           </Button>
         </div>
 

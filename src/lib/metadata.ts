@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import type { SiteConfig } from "@/types/site-config";
+import type { ServiceConfig } from "@/types/service-config";
 import { absoluteUrl, getSiteUrl } from "@/lib/site-url";
 
 function resolveOgImageUrl(config: SiteConfig): string | undefined {
@@ -76,5 +77,46 @@ export function buildSiteMetadata(
       },
     },
     category: config.sector,
+  };
+}
+
+export function buildServiceMetadata(
+  config: ServiceConfig,
+  options?: BuildSiteMetadataOptions
+): Metadata {
+  const siteUrl = getSiteUrl();
+  const canonicalPath = options?.canonical ?? "/";
+  const pageUrl = absoluteUrl(canonicalPath);
+  const title = config.seo?.title ?? config.title;
+  const description = config.seo?.description ?? config.description;
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: {
+      default: title,
+      template: `%s | ${config.name}`,
+    },
+    description,
+    keywords: config.seo?.keywords,
+    alternates: {
+      canonical: canonicalPath,
+    },
+    openGraph: {
+      title,
+      description,
+      url: pageUrl,
+      siteName: config.name,
+      locale: "tr_TR",
+      type: "website",
+    },
+    twitter: {
+      card: "summary",
+      title,
+      description,
+    },
+    robots: {
+      index: true,
+      follow: true,
+    },
   };
 }

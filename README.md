@@ -2,7 +2,17 @@
 
 Tek bir master template üzerinden farklı sektörlere (diş kliniği, kafe, spor salonu, güzellik, emlak vb.) hızlıca uyarlanabilen, mobil uyumlu ve SEO odaklı statik web siteleri üretmek için tasarlanmış bir **site üretim sistemi**dir.
 
-> Backend, CMS veya veritabanı yoktur. Tüm içerik TypeScript config dosyalarından gelir.
+> Backend, CMS veya veritabanı yoktur. İçerik TypeScript config dosyalarından gelir.
+
+## Site yapısı
+
+| Route | Açıklama |
+|-------|----------|
+| `/` | **Hizmet vitrini** — küçük işletmelere web sitesi satış landing page (`src/config/service.ts`) |
+| `/demos` | **Demo galeri** — sektör kartları ve önizleme linkleri |
+| `/demos/[sector]` | **Sektör demoları** — `SectorSite` + demo üst barı (ör. `/demos/dentist`) |
+
+Müşteri teslim sitesi yalnızca `SectorSite` + sektör config kullanır; demo barı production’da eklenmez.
 
 ## Stack
 
@@ -59,19 +69,15 @@ Tüm sektör demoları tek galeri üzerinden açılır:
 
 Registry: `src/config/sector-registry.ts` (`key`, `label`, `description`, `config`).
 
-Kök `/` route’u değişmedi — `activeSiteConfig` (varsayılan: dentist) ile çalışır.
+Hazır demo slug’ları: `dentist`, `cafe`, `gym`, `beauty`, `real-estate`.
 
-## Tek deploy sektör seçimi
+## Hizmet vitrini config
 
-Aktif müşteri/sektör `src/config/index.ts` içinden seçilir:
+Ana sayfa içeriği `src/config/service.ts` dosyasından gelir: iletişim, paketler, özellikler, süreç adımları ve sosyal linkler. Boş sosyal linkler otomatik gizlenir.
 
-```typescript
-import { cafeConfig } from "@/config/sectors/cafe";
+## Müşteri sitesi (tek sektör deploy)
 
-export const activeSiteConfig: SiteConfig = cafeConfig;
-```
-
-Hazır sektörler: `dentist`, `cafe`, `gym`, `beauty`, `real-estate` (`realEstate.ts`).
+Tek müşteri için yalnızca ilgili sektör config’i kullanılır (`SectorSite`). Örnek referans: `src/config/index.ts` içindeki `activeSiteConfig` veya doğrudan sektör dosyası import’u.
 
 Registry ile okuma:
 
@@ -125,16 +131,15 @@ src/config/sectors/
 
 ```
 src/
-  app/              layout, page, sitemap, robots
-  config/           activeSiteConfig + sector dosyaları
+  app/              layout, page (vitrin), demos, sitemap, robots
+  config/           service.ts, sector-registry, sectors/*
   components/
-    site/           SectorSite
+    service/        ServiceLanding, ServiceHeader
+    site/           SectorSite (müşteri / demo siteleri)
+    demos/          DemoGallery, DemoBanner
     sections/       Hero, Services, About, …
-    layout/         Header, Footer, WhatsApp
-    seo/            JsonLd
-    shared/         FadeIn, SiteImage, …
   lib/              metadata, links, section-copy, site-guards
-  types/            site-config.ts
+  types/            site-config.ts, service-config.ts
 docs/
   DELIVERY_CHECKLIST.md
 ```

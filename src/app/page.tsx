@@ -1,12 +1,10 @@
-import { activeSiteConfig } from "@/config";
-import { SectorSite } from "@/components/site/SectorSite";
-import { JsonLd } from "@/components/seo/JsonLd";
+import type { Metadata } from "next";
+import { serviceConfig } from "@/config/service";
+import { ServiceLanding } from "@/components/service/ServiceLanding";
+import { buildServiceMetadata } from "@/lib/metadata";
+
+export const metadata: Metadata = buildServiceMetadata(serviceConfig);
 
 export default function Home() {
-  return (
-    <>
-      <JsonLd config={activeSiteConfig} />
-      <SectorSite config={activeSiteConfig} />
-    </>
-  );
+  return <ServiceLanding config={serviceConfig} />;
 }

@@ -4,6 +4,7 @@ import {
   demoSectorSlugs,
   getSectorEntryBySlug,
 } from "@/config/sector-registry";
+import { DemoBanner } from "@/components/demos/DemoBanner";
 import { SectorSite } from "@/components/site/SectorSite";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { buildSiteMetadata } from "@/lib/metadata";
@@ -42,6 +43,7 @@ export default async function DemoSectorPage({ params }: DemoSectorPageProps) {
   return (
     <>
       <JsonLd config={entry.config} />
+      <DemoBanner />
       <SectorSite config={entry.config} />
     </>
   );
