@@ -1,36 +1,128 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# sector-site-os
 
-## Getting Started
+Tek bir master template üzerinden farklı sektörlere (diş kliniği, kafe, spor salonu, güzellik, emlak vb.) hızlıca uyarlanabilen, mobil uyumlu ve SEO odaklı statik web siteleri üretmek için tasarlanmış bir **site üretim sistemi**dir.
 
-First, run the development server:
+> Backend, CMS veya veritabanı yoktur. Tüm içerik TypeScript config dosyalarından gelir.
+
+## Stack
+
+- [Next.js](https://nextjs.org) (App Router)
+- TypeScript
+- Tailwind CSS
+- [shadcn/ui](https://ui.shadcn.com)
+- Framer Motion
+- lucide-react
+
+## Kurulum
+
+```bash
+git clone <repo-url>
+cd sector-site-os
+npm install
+cp .env.example .env.local
+```
+
+`.env.local` içinde production domain’inizi tanımlayın:
+
+```env
+NEXT_PUBLIC_SITE_URL=https://www.ornek-musteri.com
+```
+
+Geliştirme sunucusu:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Production build:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+npm run build
+npm run start
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Sektör config mantığı
 
-## Learn More
+Her müşteri / sektör için bir `SiteConfig` objesi tanımlanır. Örnek yapı:
 
-To learn more about Next.js, take a look at the following resources:
+```
+src/config/sectors/
+  dentist.ts
+  cafe.ts
+  gym.ts
+  beauty.ts
+  realEstate.ts
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Aktif site `src/config/index.ts` dosyasından seçilir:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```typescript
+import { cafeConfig } from "@/config/sectors/cafe";
 
-## Deploy on Vercel
+export const activeSiteConfig: SiteConfig = cafeConfig;
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Tüm sektörler registry üzerinden de erişilebilir:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```typescript
+import { getSectorConfig } from "@/config";
+
+const config = getSectorConfig("gym");
+```
+
+`SectorSite` bileşeni bu config’i alır; section’lar (`HeroSection`, `ServicesSection`, …) içeriği otomatik render eder. Tasarım ve layout sektörler arasında aynı kalır, yalnızca metin, tema renkleri ve iletişim bilgileri değişir.
+
+### Config alanları
+
+| Alan | Açıklama |
+|------|----------|
+| `businessName`, `sector`, `slogan`, `description` | Marka ve hero metinleri |
+| `contact` | Telefon, e-posta, adres, WhatsApp, harita |
+| `theme` | CSS değişkenleri (primary, accent, gradient) |
+| `services`, `testimonials`, `faqs` | Sayfa section içerikleri |
+| `about` | Hakkımızda metni; isteğe bağlı `image` (`/public/…`) |
+| `socialLinks` | Sosyal medya URL’leri |
+| `seo` | Title, description, keywords, `ogImage`, `twitterHandle` |
+
+## SEO
+
+Metadata `src/lib/metadata.ts` üzerinden config’den üretilir (Open Graph, Twitter, canonical).
+
+- `src/app/sitemap.ts` — `/sitemap.xml`
+- `src/app/robots.ts` — `/robots.txt`
+- `src/components/seo/JsonLd.tsx` — `LocalBusiness` yapılandırılmış veri
+
+İletişim linkleri merkezi olarak `src/lib/links.ts` içinde normalize edilir (`tel:`, `mailto:`, `wa.me`, Google Maps).
+
+Görseller için proje standardı: `src/components/shared/SiteImage.tsx` (`next/image` sarmalayıcısı).
+
+## Teslim öncesi kontrol
+
+Müşteri teslimi için: **[docs/DELIVERY_CHECKLIST.md](docs/DELIVERY_CHECKLIST.md)**
+
+## Proje yapısı (özet)
+
+```
+src/
+  app/              # layout, page, sitemap, robots
+  config/           # activeSiteConfig + sector dosyaları
+  components/
+    site/           # SectorSite master template
+    sections/       # Hero, Services, About, …
+    layout/         # Header, Footer, WhatsApp
+    shared/         # FadeIn, SiteImage, …
+  lib/              # metadata, links, theme, icons
+  types/            # site-config.ts
+```
+
+## Yeni sektör eklemek
+
+1. `src/config/sectors/yeni-sektor.ts` oluşturun (`SiteConfig` tipine uygun).
+2. `src/config/index.ts` içinde `sectorConfigs` ve export listesine ekleyin.
+3. Gerekirse `src/lib/icons.ts` içine hizmet ikonlarını ekleyin.
+4. `activeSiteConfig` import’unu yeni dosyaya çevirin.
+5. `docs/DELIVERY_CHECKLIST.md` maddelerini tamamlayın.
+
+## Lisans
+
+Private / proje sahibine aittir.
