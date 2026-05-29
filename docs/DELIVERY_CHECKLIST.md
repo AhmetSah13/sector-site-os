@@ -4,8 +4,8 @@
 
 ## 0. Demo hazırlığı
 
-- [ ] `src/config/index.ts` → doğru `activeSiteConfig` seçildi
-- [ ] `npm run build` ve `npm run lint` hatasız
+- [ ] `npm run preflight` hatasız (veya ayrı ayrı validate + lint + build)
+- [ ] Client teslimi için: [PRODUCTION_CHECKLIST.md](./PRODUCTION_CHECKLIST.md) ve [CLIENT_DELIVERY_GUIDE.md](./CLIENT_DELIVERY_GUIDE.md)
 - [ ] `npm run dev` ile mobil / tablet / desktop görünüm kontrol edildi
 - [ ] `.env.local` içinde `NEXT_PUBLIC_SITE_URL` ayarlı (production’da gerçek domain)
 
@@ -70,9 +70,8 @@ Tüm linkler `src/lib/links.ts` üzerinden üretilir:
 ```bash
 npm install
 npm run dev
-npm run build
+npm run preflight
 npm run start
-npm run lint
 ```
 
 **İlgili dosyalar**

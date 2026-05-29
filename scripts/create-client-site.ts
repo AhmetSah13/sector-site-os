@@ -451,9 +451,9 @@ async function main(): Promise<void> {
     console.log(`NEXT_PUBLIC_SITE_KEY=${clientKey}`);
 
     console.log("\nSonraki adımlar:\n");
-    console.log("  npm run validate:sites");
-    console.log("  npm run build");
-    console.log("  npm run lint\n");
+    console.log("  npm run preflight");
+    console.log("\nTeslim öncesi: docs/PRODUCTION_CHECKLIST.md");
+    console.log("Deploy: docs/DEPLOYMENT_GUIDE.md\n");
   } finally {
     rl.close();
   }

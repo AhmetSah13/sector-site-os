@@ -85,7 +85,9 @@ Production deploy öncesi domain’i gerçek URL ile güncelleyin.
 | `npm run build` | Production build |
 | `npm run start` | Production sunucu (`build` sonrası) |
 | `npm run lint` | ESLint kontrolü |
-| `npm run validate:sites` | Demo/client config doğrulama (deploy öncesi) |
+| `npm run validate:sites` | Demo/client config doğrulama |
+| `npm run create:client` | İnteraktif yeni müşteri config oluşturma |
+| `npm run preflight` | Deploy öncesi: validate + lint + build |
 
 ## Yeni müşteri sitesi oluşturma
 
@@ -106,24 +108,38 @@ Oluşturulan dosyalar:
 
 Duplicate slug veya mevcut dosya varsa script durur; üzerine yazmaz.
 
-Ardından:
+Config ve görselleri düzenledikten sonra **deploy öncesi preflight**:
 
 ```bash
-npm run validate:sites
-npm run build
-npm run lint
+npm run preflight
 ```
 
-Client mode test:
+Client mode yerel test (`.env.local`):
 
 ```env
+NEXT_PUBLIC_SITE_URL=http://localhost:3000
 NEXT_PUBLIC_SITE_MODE=client
 NEXT_PUBLIC_SITE_KEY={clientKey}
 ```
 
+Detaylı akış: [docs/CLIENT_DELIVERY_GUIDE.md](docs/CLIENT_DELIVERY_GUIDE.md) · Görseller: [docs/IMAGE_GUIDE.md](docs/IMAGE_GUIDE.md)
+
+## Production preflight
+
+Müşteri veya agency deploy öncesi tek komutla otomatik kontroller:
+
+```bash
+npm run preflight
+```
+
+Sırasıyla çalışır: `validate:sites` → `lint` → `build`. Herhangi bir adım başarısız olursa sonraki adımlar çalışmaz.
+
+Manuel teslim listesi: [docs/PRODUCTION_CHECKLIST.md](docs/PRODUCTION_CHECKLIST.md)  
+Deploy rehberi: [docs/DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md)
+
 ## Config validation
 
-Deploy veya build öncesi tüm demo/client config’lerini doğrulayın:
+Tüm demo/client config’lerini ayrıca doğrulamak için:
 
 ```bash
 npm run validate:sites
@@ -207,7 +223,7 @@ Otomasyon için `npm run create:client` kullanın. Manuel ekleme:
 3. Vercel’de ayrı proje veya environment:
    - `NEXT_PUBLIC_SITE_MODE=client`
    - `NEXT_PUBLIC_SITE_KEY=musteri-adi`
-4. [docs/DELIVERY_CHECKLIST.md](docs/DELIVERY_CHECKLIST.md) maddelerini tamamlayın.
+4. `npm run preflight` ve [docs/PRODUCTION_CHECKLIST.md](docs/PRODUCTION_CHECKLIST.md).
 
 `src/lib/site-mode.ts`: `getSiteMode()`, `isAgencyMode()`, `isClientMode()`, `getActiveClientSite()`.
 
@@ -228,9 +244,19 @@ src/
   lib/              site-mode, metadata, links, …
   types/            site-config.ts, service-config.ts
 docs/
+  PRODUCTION_CHECKLIST.md
+  DEPLOYMENT_GUIDE.md
+  CLIENT_DELIVERY_GUIDE.md
+  IMAGE_GUIDE.md
   DELIVERY_CHECKLIST.md
 ```
 
-## Teslim kontrolü
+## Teslim ve deploy
 
-Müşteri demosu / teslim öncesi: **[docs/DELIVERY_CHECKLIST.md](docs/DELIVERY_CHECKLIST.md)**
+| Doküman | Amaç |
+|---------|------|
+| [PRODUCTION_CHECKLIST.md](docs/PRODUCTION_CHECKLIST.md) | Deploy öncesi manuel kalite kontrolü |
+| [DEPLOYMENT_GUIDE.md](docs/DEPLOYMENT_GUIDE.md) | Agency / client Vercel deploy |
+| [CLIENT_DELIVERY_GUIDE.md](docs/CLIENT_DELIVERY_GUIDE.md) | Müşteri sitesi uçtan uca teslim |
+| [IMAGE_GUIDE.md](docs/IMAGE_GUIDE.md) | Müşteri görsel klasörü standardı |
+| [DELIVERY_CHECKLIST.md](docs/DELIVERY_CHECKLIST.md) | Kısa MVP teslim listesi (legacy) |

@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "eslint",
     "validate:sites": "tsx scripts/validate-sites.ts",
-    "create:client": "tsx scripts/create-client-site.ts"
+    "create:client": "tsx scripts/create-client-site.ts",
+    "preflight": "npm run validate:sites && npm run lint && npm run build"
   },
   "dependencies": {
     "class-variance-authority": "^0.7.1",

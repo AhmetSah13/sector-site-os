@@ -16,7 +16,7 @@ export const testDentalConfig: SiteConfig = {
     "address": "aşdlkfjaşkdf",
     "city": "İstanbul",
     "mapUrl": "https://maps.google.com",
-    "whatsapp": "033003",
+    "whatsapp": "905321234567",
     "workingHours": "Pzt–Cmt: 09:00 – 19:00"
   },
   "theme": {
