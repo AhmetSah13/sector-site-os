@@ -10,8 +10,18 @@ function resolveOgImageUrl(config: SiteConfig): string | undefined {
   return absoluteUrl(ogImage.startsWith("/") ? ogImage : `/${ogImage}`);
 }
 
-export function buildSiteMetadata(config: SiteConfig): Metadata {
+export interface BuildSiteMetadataOptions {
+  /** Path for canonical and Open Graph URL, e.g. `/demos/cafe` */
+  canonical?: string;
+}
+
+export function buildSiteMetadata(
+  config: SiteConfig,
+  options?: BuildSiteMetadataOptions
+): Metadata {
   const siteUrl = getSiteUrl();
+  const canonicalPath = options?.canonical ?? "/";
+  const pageUrl = absoluteUrl(canonicalPath);
   const title = config.seo?.title ?? config.businessName;
   const description = config.seo?.description ?? config.description;
   const ogImageUrl = resolveOgImageUrl(config);
@@ -26,12 +36,12 @@ export function buildSiteMetadata(config: SiteConfig): Metadata {
     description,
     keywords: config.seo?.keywords,
     alternates: {
-      canonical: "/",
+      canonical: canonicalPath,
     },
     openGraph: {
       title,
       description,
-      url: siteUrl,
+      url: pageUrl,
       siteName: config.businessName,
       locale: "tr_TR",
       type: "website",

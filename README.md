@@ -44,7 +44,24 @@ Build sonrası SEO dosyaları:
 - [http://localhost:3000/sitemap.xml](http://localhost:3000/sitemap.xml)
 - [http://localhost:3000/robots.txt](http://localhost:3000/robots.txt)
 
-## Demo: sektör değiştirme
+## Demo sunumu (multi-sector routing)
+
+Tüm sektör demoları tek galeri üzerinden açılır:
+
+| URL | Açıklama |
+|-----|----------|
+| [/demos](http://localhost:3000/demos) | Demo galeri — sektör kartları |
+| `/demos/dentist` | Diş kliniği |
+| `/demos/cafe` | Kafe |
+| `/demos/gym` | Spor salonu |
+| `/demos/beauty` | Güzellik |
+| `/demos/real-estate` | Gayrimenkul |
+
+Registry: `src/config/sector-registry.ts` (`key`, `label`, `description`, `config`).
+
+Kök `/` route’u değişmedi — `activeSiteConfig` (varsayılan: dentist) ile çalışır.
+
+## Tek deploy sektör seçimi
 
 Aktif müşteri/sektör `src/config/index.ts` içinden seçilir:
 
