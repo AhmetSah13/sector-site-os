@@ -85,6 +85,29 @@ Production deploy öncesi domain’i gerçek URL ile güncelleyin.
 | `npm run build` | Production build |
 | `npm run start` | Production sunucu (`build` sonrası) |
 | `npm run lint` | ESLint kontrolü |
+| `npm run validate:sites` | Demo/client config doğrulama (deploy öncesi) |
+
+## Config validation
+
+Deploy veya build öncesi tüm demo/client config’lerini doğrulayın:
+
+```bash
+npm run validate:sites
+```
+
+Kontroller: zorunlu alanlar, slug formatı, e-posta/telefon/WhatsApp, services/testimonials/faqs içerikleri, boş sosyal link uyarıları, duplicate key, client mode için geçerli `NEXT_PUBLIC_SITE_KEY`.
+
+Örnek çıktı:
+
+```
+[OK] demo:dentist
+[WARN] demo:cafe -> instagram link is empty
+[ERROR] client:sample-client -> config.businessName is required
+```
+
+Hata varsa exit code `1`. Uyarılar build’i durdurmaz.
+
+Client mode env doğrulaması için `.env.local` otomatik okunur (varsa).
 
 Build sonrası SEO dosyaları:
 
