@@ -5,6 +5,7 @@ interface SectionShellProps {
   children: React.ReactNode;
   className?: string;
   variant?: "default" | "muted" | "primary";
+  "data-section-variant"?: string;
 }
 
 export function SectionShell({
@@ -12,10 +13,12 @@ export function SectionShell({
   children,
   className,
   variant = "default",
+  "data-section-variant": sectionVariant,
 }: SectionShellProps) {
   return (
     <section
       id={id}
+      data-section-variant={sectionVariant}
       className={cn(
         "scroll-mt-20 py-16 sm:py-20 lg:py-24",
         variant === "muted" && "bg-muted/40",

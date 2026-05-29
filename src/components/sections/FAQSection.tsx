@@ -14,13 +14,14 @@ import {
 
 interface FAQSectionProps {
   config: SiteConfig;
+  variant?: string;
 }
 
-export function FAQSection({ config }: FAQSectionProps) {
+export function FAQSection({ config, variant = "default" }: FAQSectionProps) {
   const copy = resolveSectionCopy(config);
 
   return (
-    <SectionShell id="faq" variant="muted">
+    <SectionShell id="faq" variant="muted" data-section-variant={variant}>
       <FadeIn>
         <SectionHeading
           eyebrow={copy.faq.eyebrow}

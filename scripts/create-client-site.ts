@@ -18,6 +18,7 @@ import { cafeConfig } from "../src/config/sites/demos/cafe";
 import { gymConfig } from "../src/config/sites/demos/gym";
 import { beautyConfig } from "../src/config/sites/demos/beauty";
 import { realEstateConfig } from "../src/config/sites/demos/realEstate";
+import { DEFAULT_SECTION_LAYOUT } from "../src/config/section-layout-default";
 import type { SiteConfig } from "../src/types/site-config";
 
 const SLUG_PATTERN = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -95,6 +96,7 @@ function createMinimalTemplate(input: ClientInput): SiteConfig {
       paragraphs: [input.description],
       bullets: ["Profesyonel hizmet", "Mobil uyumlu site"],
     },
+    sectionLayout: structuredClone(DEFAULT_SECTION_LAYOUT),
     sections: {
       hero: {
         badge: input.businessName,
@@ -183,6 +185,10 @@ function buildConfigFromInput(input: ClientInput): SiteConfig {
     if (base.about.paragraphs?.length) {
       base.about.paragraphs[0] = input.description;
     }
+  }
+
+  if (!base.sectionLayout?.length) {
+    base.sectionLayout = structuredClone(DEFAULT_SECTION_LAYOUT);
   }
 
   return base;

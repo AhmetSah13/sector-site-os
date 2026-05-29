@@ -82,15 +82,43 @@ export interface CtaSectionCopy {
 export interface SiteSectionsCopy {
   hero?: HeroSectionCopy;
   services?: SectionHeadingCopy;
+  gallery?: SectionHeadingCopy;
   testimonials?: SectionHeadingCopy;
   faq?: SectionHeadingCopy;
   contact?: SectionHeadingCopy;
   cta?: CtaSectionCopy;
 }
 
+export type SectionId =
+  | "hero"
+  | "services"
+  | "about"
+  | "gallery"
+  | "testimonials"
+  | "faq"
+  | "cta"
+  | "contact";
+
+export type SectionVariant = string;
+
+export interface SectionLayoutItem {
+  id: SectionId;
+  enabled: boolean;
+  variant?: SectionVariant;
+}
+
+export interface GalleryImage {
+  id: string;
+  /** Path under /public, e.g. /images/clients/acme/gallery-1.jpg */
+  src: string;
+  alt: string;
+  caption?: string;
+}
+
 export type ResolvedSectionCopy = {
   hero: Required<HeroSectionCopy>;
   services: Required<SectionHeadingCopy>;
+  gallery: Required<SectionHeadingCopy>;
   testimonials: Required<SectionHeadingCopy>;
   faq: Required<SectionHeadingCopy>;
   contact: Required<SectionHeadingCopy>;
@@ -129,6 +157,10 @@ export interface SiteConfig {
   faqs: FAQItem[];
   socialLinks: SocialLink[];
   about: AboutContent;
+  /** Section sırası, görünürlük ve varyant (ileride tasarım varyantları) */
+  sectionLayout?: SectionLayoutItem[];
+  /** Opsiyonel galeri görselleri — boşsa gallery section render edilmez */
+  gallery?: GalleryImage[];
   /** Section başlıkları, CTA metinleri ve hero butonları */
   sections?: SiteSectionsCopy;
   seo?: SiteSEO;

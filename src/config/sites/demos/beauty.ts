@@ -143,6 +143,16 @@ export const beautyConfig: SiteConfig = {
       "Online randevu kolaylığı",
     ],
   },
+  sectionLayout: [
+    { id: "hero", enabled: true, variant: "default" },
+    { id: "services", enabled: true, variant: "cards" },
+    { id: "about", enabled: true, variant: "default" },
+    { id: "gallery", enabled: true, variant: "grid" },
+    { id: "testimonials", enabled: true, variant: "cards" },
+    { id: "faq", enabled: true, variant: "accordion" },
+    { id: "cta", enabled: true, variant: "default" },
+    { id: "contact", enabled: true, variant: "default" },
+  ],
   sections: {
     hero: {
       badge: "İlk cilt analizi ücretsiz",

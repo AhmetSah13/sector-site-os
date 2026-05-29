@@ -19,9 +19,13 @@ import { hasEmail, hasPhone } from "@/lib/site-guards";
 
 interface ContactSectionProps {
   config: SiteConfig;
+  variant?: string;
 }
 
-export function ContactSection({ config }: ContactSectionProps) {
+export function ContactSection({
+  config,
+  variant = "default",
+}: ContactSectionProps) {
   const { contact } = config;
   const copy = resolveSectionCopy(config);
   const phoneHref = buildTelHref(contact.phone);
@@ -31,7 +35,7 @@ export function ContactSection({ config }: ContactSectionProps) {
   const mapsHref = buildMapsHref(contact);
 
   return (
-    <SectionShell id="contact">
+    <SectionShell id="contact" data-section-variant={variant}>
       <FadeIn>
         <SectionHeading
           eyebrow={copy.contact.eyebrow}

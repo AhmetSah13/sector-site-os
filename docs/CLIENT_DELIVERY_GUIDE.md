@@ -31,7 +31,9 @@ Duplicate `clientKey` veya geçersiz slug → script durur, üzerine yazmaz.
    - `contact.*` (telefon, e-posta, adres, WhatsApp)
    - `services`, `testimonials`, `faqs`
    - `about` (paragraflar, bullets, highlights)
-   - `sections` (başlıklar, CTA metinleri)
+   - `sectionLayout` (sıra, `enabled`, `variant`)
+   - `sections` (başlıklar, CTA metinleri — copy)
+   - `gallery` (galeri görselleri; boşsa section görünmez)
    - `theme` (marka renkleri)
    - `seo` (title, description, ogImage)
    - `socialLinks`
@@ -41,6 +43,21 @@ npm run validate:sites
 ```
 
 Hataları düzeltin; uyarıları (boş sosyal link vb.) bilinçli bırakın veya doldurun.
+
+### Section control
+
+`sectionLayout` ile hangi bölümlerin görüneceğini ve sırasını ayarlayın. `enabled: false` olanlar render edilmez. `sectionLayout` yoksa varsayılan sıra kullanılır.
+
+```ts
+sectionLayout: [
+  { id: "hero", enabled: true, variant: "default" },
+  { id: "services", enabled: true, variant: "cards" },
+  { id: "testimonials", enabled: false, variant: "cards" },
+  { id: "contact", enabled: true, variant: "default" },
+],
+```
+
+İçerik guard’ları geçerlidir: örneğin `services: []` ise services section yine görünmez. `variant` şimdilik yalnızca ilerideki tasarım varyantları için saklanır.
 
 ---
 
@@ -72,7 +89,16 @@ about: {
 seo: {
   ogImage: "/images/clients/acme-dental/hero.jpg",
 },
+gallery: [
+  {
+    id: "g1",
+    src: "/images/clients/acme-dental/gallery-1.jpg",
+    alt: "Klinik iç mekan",
+  },
+],
 ```
+
+`sectionLayout` içinde `{ id: "gallery", enabled: true }` olmalı ve `gallery` dizisi dolu olmalı.
 
 ---
 

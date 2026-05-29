@@ -7,20 +7,24 @@ import { Badge } from "@/components/ui/badge";
 import { FadeIn } from "@/components/shared/FadeIn";
 import { buildTelHref } from "@/lib/links";
 import { resolveSectionCopy } from "@/lib/section-copy";
-import { hasPhone, hasServices } from "@/lib/site-guards";
+import { shouldRenderSection } from "@/lib/section-layout";
+import { hasPhone } from "@/lib/site-guards";
 
 interface HeroSectionProps {
   config: SiteConfig;
+  variant?: string;
 }
 
-export function HeroSection({ config }: HeroSectionProps) {
+export function HeroSection({ config, variant = "default" }: HeroSectionProps) {
   const copy = resolveSectionCopy(config);
   const phoneHref = buildTelHref(config.contact.phone);
   const showPhoneCta = hasPhone(config) && phoneHref;
-  const showServicesCta = hasServices(config);
+  const showServicesCta = shouldRenderSection(config, "services");
 
   return (
     <section
+      id="hero"
+      data-section-variant={variant}
       className="relative overflow-hidden border-b border-border/60"
       style={{
         background: `linear-gradient(135deg, var(--hero-from) 0%, var(--hero-to) 55%, var(--background) 100%)`,

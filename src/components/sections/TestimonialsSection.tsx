@@ -8,6 +8,7 @@ import { Card, CardContent } from "@/components/ui/card";
 
 interface TestimonialsSectionProps {
   config: SiteConfig;
+  variant?: string;
 }
 
 function clampRating(rating?: number): number {
@@ -15,11 +16,14 @@ function clampRating(rating?: number): number {
   return Math.min(5, Math.max(0, Math.round(rating)));
 }
 
-export function TestimonialsSection({ config }: TestimonialsSectionProps) {
+export function TestimonialsSection({
+  config,
+  variant = "default",
+}: TestimonialsSectionProps) {
   const copy = resolveSectionCopy(config);
 
   return (
-    <SectionShell id="testimonials">
+    <SectionShell id="testimonials" data-section-variant={variant}>
       <FadeIn>
         <SectionHeading
           eyebrow={copy.testimonials.eyebrow}

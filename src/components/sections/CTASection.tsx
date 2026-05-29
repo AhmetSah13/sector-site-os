@@ -9,9 +9,10 @@ import { hasPhone, hasWhatsApp } from "@/lib/site-guards";
 
 interface CTASectionProps {
   config: SiteConfig;
+  variant?: string;
 }
 
-export function CTASection({ config }: CTASectionProps) {
+export function CTASection({ config, variant = "default" }: CTASectionProps) {
   const copy = resolveSectionCopy(config);
   const phoneHref = buildTelHref(config.contact.phone);
   const whatsappHref = buildWhatsAppHref(
@@ -24,7 +25,12 @@ export function CTASection({ config }: CTASectionProps) {
   if (!showPhone && !showWhatsApp) return null;
 
   return (
-    <SectionShell variant="primary" className="relative overflow-hidden">
+    <SectionShell
+      id="cta"
+      variant="primary"
+      className="relative overflow-hidden"
+      data-section-variant={variant}
+    >
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,255,255,0.12),transparent_50%)]" />
       <FadeIn>
         <div className="relative mx-auto max-w-3xl px-1 text-center">

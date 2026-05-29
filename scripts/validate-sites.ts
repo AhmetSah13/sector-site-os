@@ -9,7 +9,10 @@ import {
   demoRegistry,
   type SiteRegistryEntry,
 } from "../src/config/site-registry";
-import type { SiteConfig } from "../src/types/site-config";
+import type { SectionId, SiteConfig } from "../src/types/site-config";
+import { SUPPORTED_SECTION_IDS } from "../src/lib/section-layout";
+
+const SUPPORTED_SECTION_ID_SET = new Set<string>(SUPPORTED_SECTION_IDS);
 
 type IssueLevel = "error" | "warn";
 
@@ -183,6 +186,54 @@ function validateSiteConfig(config: SiteConfig, issues: Issue[]): void {
       }
     });
   }
+
+  validateSectionLayout(config, issues);
+}
+
+function validateSectionLayout(config: SiteConfig, issues: Issue[]): void {
+  if (!config.sectionLayout?.length) {
+    return;
+  }
+
+  const seen = new Set<SectionId>();
+
+  config.sectionLayout.forEach((item, index) => {
+    const prefix = `config.sectionLayout[${index}]`;
+
+    if (!SUPPORTED_SECTION_ID_SET.has(item.id)) {
+      issues.push({
+        level: "error",
+        message: `${prefix}.id "${item.id}" is not supported (allowed: ${SUPPORTED_SECTION_IDS.join(", ")})`,
+      });
+      return;
+    }
+
+    if (seen.has(item.id)) {
+      issues.push({
+        level: "error",
+        message: `${prefix}.id duplicate section id "${item.id}"`,
+      });
+    } else {
+      seen.add(item.id);
+    }
+
+    if (typeof item.enabled !== "boolean") {
+      issues.push({
+        level: "error",
+        message: `${prefix}.enabled must be a boolean`,
+      });
+    }
+
+    if (item.variant !== undefined && item.variant !== null) {
+      const variant = String(item.variant).trim();
+      if (!variant) {
+        issues.push({
+          level: "warn",
+          message: `${prefix}.variant is empty — treated as "default"`,
+        });
+      }
+    }
+  });
 }
 
 function validateEntry(entry: SiteRegistryEntry): Issue[] {

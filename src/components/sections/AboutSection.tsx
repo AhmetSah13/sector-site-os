@@ -6,14 +6,15 @@ import { SiteImage } from "@/components/shared/SiteImage";
 
 interface AboutSectionProps {
   config: SiteConfig;
+  variant?: string;
 }
 
-export function AboutSection({ config }: AboutSectionProps) {
+export function AboutSection({ config, variant = "default" }: AboutSectionProps) {
   const { about } = config;
   const bullets = about.bullets ?? [];
 
   return (
-    <SectionShell id="about" variant="muted">
+    <SectionShell id="about" variant="muted" data-section-variant={variant}>
       <div className="grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
         <FadeIn direction="none">
           {about.image ? (

@@ -14,13 +14,17 @@ import {
 
 interface ServicesSectionProps {
   config: SiteConfig;
+  variant?: string;
 }
 
-export function ServicesSection({ config }: ServicesSectionProps) {
+export function ServicesSection({
+  config,
+  variant = "default",
+}: ServicesSectionProps) {
   const copy = resolveSectionCopy(config);
 
   return (
-    <SectionShell id="services">
+    <SectionShell id="services" data-section-variant={variant}>
       <FadeIn>
         <SectionHeading
           eyebrow={copy.services.eyebrow}

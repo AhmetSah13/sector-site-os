@@ -3,11 +3,7 @@ import Link from "next/link";
 import type { SiteConfig, SocialPlatform } from "@/types/site-config";
 import { Separator } from "@/components/ui/separator";
 import { normalizeExternalUrl } from "@/lib/links";
-import {
-  hasAbout,
-  hasFaqs,
-  hasServices,
-} from "@/lib/site-guards";
+import { shouldRenderSection } from "@/lib/section-layout";
 
 function IconInstagram({ className }: { className?: string }) {
   return (
@@ -76,11 +72,15 @@ export function Footer({ config }: FooterProps) {
   const year = new Date().getFullYear();
 
   const footerLinks = [
-    { href: "#services", label: "Hizmetler", visible: hasServices(config) },
-    { href: "#about", label: "Hakkımızda", visible: hasAbout(config) },
-    { href: "#faq", label: "SSS", visible: hasFaqs(config) },
-    { href: "#contact", label: "İletişim", visible: true },
-  ].filter((link) => link.visible);
+    {
+      href: "#services",
+      label: "Hizmetler",
+      sectionId: "services" as const,
+    },
+    { href: "#about", label: "Hakkımızda", sectionId: "about" as const },
+    { href: "#faq", label: "SSS", sectionId: "faq" as const },
+    { href: "#contact", label: "İletişim", sectionId: "contact" as const },
+  ].filter((link) => shouldRenderSection(config, link.sectionId));
 
   const socialLinks = config.socialLinks
     .map((link) => ({

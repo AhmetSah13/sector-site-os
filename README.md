@@ -190,7 +190,26 @@ Agency modda `/` içeriği `src/config/service.ts` dosyasından gelir.
 
 ## Site config mantığı
 
-`SectorSite` → section bileşenleri yalnızca `SiteConfig` prop’undan render olur. Boş `services` / `testimonials` / `faqs` dizilerinde ilgili bölüm gizlenir.
+`SectorSite` → section bileşenleri yalnızca `SiteConfig` prop’undan render olur. Sıra ve görünürlük `sectionLayout` ile; metinler `sections` (copy) ile yönetilir.
+
+### Section control (`sectionLayout`)
+
+`sectionLayout` yoksa varsayılan sıra kullanılır (hero → services → about → gallery → testimonials → faq → cta → contact).
+
+```ts
+sectionLayout: [
+  { id: "hero", enabled: true, variant: "default" },
+  { id: "services", enabled: true, variant: "cards" },
+  { id: "gallery", enabled: false, variant: "grid" },
+  // ...
+],
+```
+
+- `enabled: false` → section render edilmez (nav/footer’da da gizlenir).
+- `variant` → şimdilik yalnızca tip/prop; tasarım varyantı ileride.
+- İçerik boşsa guard devreye girer (`services` boşsa services yine render edilmez).
+
+Desteklenen `id`: `hero`, `services`, `about`, `gallery`, `testimonials`, `faq`, `cta`, `contact`. Galeri için `gallery: [{ id, src, alt }]` doldurun.
 
 ### Önemli config alanları
 
@@ -201,7 +220,9 @@ Agency modda `/` içeriği `src/config/service.ts` dosyasından gelir.
 | `theme` | Renkler (CSS değişkenleri) |
 | `services`, `testimonials`, `faqs` | Liste içerikleri |
 | `about` | Hakkımızda; `bullets`, isteğe bağlı `image` |
-| `sections` | Section başlıkları ve CTA metinleri |
+| `gallery` | Galeri görselleri (`src` = `/images/clients/...`) |
+| `sectionLayout` | Section sırası, `enabled`, `variant` |
+| `sections` | Section başlıkları ve CTA metinleri (copy) |
 | `socialLinks` | Sosyal medya |
 | `seo` | Metadata, Open Graph, Twitter |
 

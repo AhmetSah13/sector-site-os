@@ -13,6 +13,10 @@ export function hasFaqs(config: SiteConfig): boolean {
   return (config.faqs?.length ?? 0) > 0;
 }
 
+export function hasGallery(config: SiteConfig): boolean {
+  return (config.gallery?.length ?? 0) > 0;
+}
+
 export function hasAbout(config: SiteConfig): boolean {
   const { about } = config;
   return Boolean(about?.title?.trim()) && (about.paragraphs?.length ?? 0) > 0;

@@ -76,6 +76,16 @@ export const sampleClientConfig: SiteConfig = {
     ],
     bullets: ["Production-ready SectorSite", "Config-driven içerik"],
   },
+  sectionLayout: [
+    { id: "hero", enabled: true, variant: "default" },
+    { id: "services", enabled: true, variant: "cards" },
+    { id: "about", enabled: true, variant: "default" },
+    { id: "gallery", enabled: false, variant: "grid" },
+    { id: "testimonials", enabled: true, variant: "cards" },
+    { id: "faq", enabled: true, variant: "accordion" },
+    { id: "cta", enabled: true, variant: "default" },
+    { id: "contact", enabled: true, variant: "default" },
+  ],
   sections: {
     hero: {
       badge: "Örnek müşteri sitesi",

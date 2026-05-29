@@ -14,6 +14,13 @@ export function resolveSectionCopy(config: SiteConfig): ResolvedSectionCopy {
       title: s?.services?.title ?? `${config.businessName} — Hizmetler`,
       description: s?.services?.description ?? config.description,
     },
+    gallery: {
+      eyebrow: s?.gallery?.eyebrow ?? "Galeri",
+      title: s?.gallery?.title ?? "Galeri",
+      description:
+        s?.gallery?.description ??
+        `${config.businessName} — fotoğraf ve çalışma örnekleri.`,
+    },
     testimonials: {
       eyebrow: s?.testimonials?.eyebrow ?? "Yorumlar",
       title: s?.testimonials?.title ?? "Müşterilerimiz ne diyor?",

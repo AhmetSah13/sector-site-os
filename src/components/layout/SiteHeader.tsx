@@ -14,13 +14,8 @@ import {
 } from "@/components/ui/sheet";
 import { buildTelHref } from "@/lib/links";
 import { resolveSectionCopy } from "@/lib/section-copy";
-import {
-  hasAbout,
-  hasFaqs,
-  hasPhone,
-  hasServices,
-  hasTestimonials,
-} from "@/lib/site-guards";
+import { shouldRenderSection } from "@/lib/section-layout";
+import { hasPhone } from "@/lib/site-guards";
 
 interface SiteHeaderProps {
   config: SiteConfig;
@@ -35,16 +30,25 @@ export function SiteHeader({ config }: SiteHeaderProps) {
   const navLinks = useMemo(
     () =>
       [
-        { href: "#services", label: "Hizmetler", visible: hasServices(config) },
-        { href: "#about", label: "Hakkımızda", visible: hasAbout(config) },
+        {
+          href: "#services",
+          label: "Hizmetler",
+          sectionId: "services" as const,
+        },
+        { href: "#about", label: "Hakkımızda", sectionId: "about" as const },
+        {
+          href: "#gallery",
+          label: "Galeri",
+          sectionId: "gallery" as const,
+        },
         {
           href: "#testimonials",
           label: "Yorumlar",
-          visible: hasTestimonials(config),
+          sectionId: "testimonials" as const,
         },
-        { href: "#faq", label: "SSS", visible: hasFaqs(config) },
-        { href: "#contact", label: "İletişim", visible: true },
-      ].filter((link) => link.visible),
+        { href: "#faq", label: "SSS", sectionId: "faq" as const },
+        { href: "#contact", label: "İletişim", sectionId: "contact" as const },
+      ].filter((link) => shouldRenderSection(config, link.sectionId)),
     [config]
   );
 
